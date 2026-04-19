@@ -1,438 +1,506 @@
-// pages/visitor-form.jsx
-import { Button, Form, Input, NumberInput, Select, SelectItem, Textarea } from "@heroui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { CameraIcon, ArrowLeftIcon, PhoneIcon, UserGroupIcon, UserIcon, UsersIcon, AcademicCapIcon, BuildingStorefrontIcon, HomeModernIcon } from "@heroicons/react/24/solid";
-import VisitorDetails from "./VisitorDetails"
-import SecurityDetails from "./SecurityDetails"
-import ExitDetails from "./ExitDetails"
-import { AtSymbolIcon, BuildingOffice2Icon, EnvelopeIcon } from "@heroicons/react/16/solid";
-import axios from "@/lib/axios";
-import Toast from "@/components/Toast";
+"use client"
+import React, { useRef, useState } from "react"
+import {
+  Button, Input, Select, SelectItem,
+  Progress, Card, CardBody,
+} from "@heroui/react"
+import {
+  UserIcon, PhoneIcon, EnvelopeIcon, BuildingOffice2Icon,
+  AcademicCapIcon, CameraIcon, MapPinIcon, ArrowLeftIcon,
+  ArrowRightIcon, CheckIcon, PencilSquareIcon,
+} from "@heroicons/react/24/solid"
+import { HomeModernIcon } from "@heroicons/react/24/solid"
+import VisitorDetails from "./steps/VisitDetails"
+import SecurityStep from "./steps/SecurityStep"
+import ConfirmationStep from "./steps/ConfirmationStep"
+import Toast from "@/components/Toast"
+import axios from "@/lib/axios"
 
-export default function VisitorFormPage({ setOpenVisitorsForm, formData = {} }) {
-  const [files, setFiles] = useState([]);
-  const [visitorType, setVisitorType] = useState("");
-  const [vendorData, setVendorData] = useState({
-    name: "",
-    company: "",
-    from: "",
-    phone: "",
-    gst: "",
-    address: "",
-    product: "",
-  });
-  const [dateOfVisit] = useState(new Date().toISOString().split("T")[0]);
+const STEPS = [
+  { id: 1, label: "Personal Info", icon: "👤" },
+  { id: 2, label: "Visit Details", icon: "📋" },
+  { id: 3, label: "Security", icon: "🔒" },
+  { id: 4, label: "Confirm & Sign", icon: "✅" },
+]
 
-  // camera / photo
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [streaming, setStreaming] = useState(false);
-  const [capturedBlobUrl, setCapturedBlobUrl] = useState(null);
-  const [capturedBlobFile, setCapturedBlobFile] = useState(null);
+const visitorTypes = [
+  { key: "vendor", label: "Vendor / Supplier" },
+  { key: "customer", label: "Customer / Client" },
+  { key: "logistics", label: "Logistics / Transport" },
+  { key: "jobApplicant", label: "Job Applicant" },
+  { key: "government", label: "Government Official" },
+  { key: "serviceProvider", label: "Service Provider" },
+  { key: "consultant", label: "Consultant" },
+  { key: "family", label: "Friends / Family" },
+  { key: "intern", label: "Intern / Trainee" },
+  { key: "media", label: "Media / PR" },
+  { key: "contractor", label: "Contractor" },
+  { key: "auditor", label: "Auditor" },
+  { key: "researcher", label: "Researcher" },
+  { key: "delivery", label: "Delivery Person" },
+  { key: "other", label: "Other" },
+]
 
-  // documents
-  const [documents, setDocuments] = useState([]);
+function StepIndicator({ currentStep }) {
+  return (
+    <div className="flex items-center justify-between mb-8">
+      {STEPS.map((step, idx) => {
+        const isCompleted = currentStep > step.id
+        const isActive = currentStep === step.id
+        return (
+          <React.Fragment key={step.id}>
+            <div className="flex flex-col items-center gap-1.5">
+              <div className={`
+                w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300
+                ${isCompleted ? "bg-purple-600 text-white shadow-lg shadow-purple-200" : ""}
+                ${isActive ? "bg-purple-600 text-white ring-4 ring-purple-200 shadow-lg" : ""}
+                ${!isCompleted && !isActive ? "bg-gray-100 text-gray-400 border-2 border-gray-200" : ""}
+              `}>
+                {isCompleted ? <CheckIcon className="w-5 h-5" /> : <span>{step.icon}</span>}
+              </div>
+              <span className={`text-xs font-semibold whitespace-nowrap ${isActive ? "text-purple-700" : isCompleted ? "text-purple-500" : "text-gray-400"}`}>
+                {step.label}
+              </span>
+            </div>
+            {idx < STEPS.length - 1 && (
+              <div className={`flex-1 h-0.5 mx-2 rounded transition-all duration-500 ${currentStep > step.id ? "bg-purple-500" : "bg-gray-200"}`} />
+            )}
+          </React.Fragment>
+        )
+      })}
+    </div>
+  )
+}
 
-  // Start camera
+export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuccess }) {
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Step 1 — personal info
+  const [photo, setPhoto] = useState(formData?.photo || null)
+  const [streaming, setStreaming] = useState(false)
+  const videoRef = useRef(null)
+  const canvasRef = useRef(null)
+  const fileInputRef = useRef(null)
+
+  // Step 2 — visit details (lifted state for summary)
+  const [visitData, setVisitData] = useState({
+    checkIn: null,
+    purposeOfVisit: formData?.purposeOfVisit || "",
+    visitDetails: formData?.visitDetails || "",
+    meetingWith: formData?.meetingWith || "",
+    visitLocation: formData?.visitLocation || "",
+    expectedDuration: formData?.expectedDuration || "",
+    remarks: formData?.remarks || "",
+    isRecurring: formData?.isRecurring || false,
+    recurringFrequency: formData?.recurringFrequency || "",
+  })
+
+  // Step 3 — security
+  const [securityData, setSecurityData] = useState({
+    providedIDProofs: formData?.providedIDProofs || [],
+    idNumber: formData?.idNumber || "",
+    hasVehicle: formData?.hasVehicle || false,
+    vehicleNumber: formData?.vehicleNumber || "",
+    vehicleType: formData?.vehicleType || "",
+    materialsCarriedIn: formData?.materialsCarriedIn || [],
+    safetyBriefingGiven: formData?.safetyBriefingGiven || false,
+    ndaSigned: formData?.ndaSigned || false,
+    gatePassNumber: formData?.gatePassNumber || "",
+    securityGuard: formData?.securityGuard || "",
+    attachments: [],
+  })
+
+  // Step 4 — signatures
+  const [visitorSignature, setVisitorSignature] = useState(null)
+  const [securitySignature, setSecuritySignature] = useState(null)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
+
+  // Step 1 form refs (for reading values during submit)
+  const step1Ref = useRef({})
+
+  // Camera
   async function startCamera() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
       if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
       }
-      setStreaming(true);
-    } catch (err) {
-      console.error("Camera error:", err);
-      alert("Could not access camera. Allow camera permission or try HTTPS / localhost.");
+      setStreaming(true)
+    } catch {
+      Toast("Camera Error", "Could not access camera", "danger")
     }
   }
-
-  // stop camera
   function stopCamera() {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((t) => t.stop());
-      videoRef.current.srcObject = null;
+    if (videoRef.current?.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach(t => t.stop())
+      videoRef.current.srcObject = null
     }
-    setStreaming(false);
+    setStreaming(false)
   }
-  useEffect(() => setCapturedBlobUrl(formData.photo), [])
-
   function capturePhoto() {
-    if (!videoRef.current || !canvasRef.current) return;
-
-    const width = 640;
-    const height = 480;
-
-    canvasRef.current.width = width;
-    canvasRef.current.height = height;
-
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.drawImage(videoRef.current, 0, 0, width, height);
-
-    // Get Base64 directly
-    const base64String = canvasRef.current.toDataURL("image/jpeg", 0.9);
-
-    // You can still set a preview URL if needed
-    setCapturedBlobUrl(base64String);
-
-    // Stop camera after capture
-    stopCamera();
+    if (!videoRef.current || !canvasRef.current) return
+    canvasRef.current.width = 640
+    canvasRef.current.height = 480
+    canvasRef.current.getContext("2d").drawImage(videoRef.current, 0, 0, 640, 480)
+    const base64 = canvasRef.current.toDataURL("image/jpeg", 0.9)
+    setPhoto(base64)
+    stopCamera()
   }
-
-
-  // upload photo via file picker (fallback)
   function handlePhotoUpload(e) {
-    const f = e.target.files && e.target.files[0];
-    if (f) {
-      // Keep the file object (Blob)
-      setCapturedBlobFile(f);
+    const f = e.target.files?.[0]
+    if (!f) return
+    const reader = new FileReader()
+    reader.onloadend = () => setPhoto(reader.result)
+    reader.readAsDataURL(f)
+  }
 
-      // Set preview URL
-      setCapturedBlobUrl(URL.createObjectURL(f));
-
-      // Convert to Base64
-      const reader = new FileReader();
-      reader.onloadend = function () {
-        const base64String = reader.result; // includes "data:image/...;base64,"
-        setCapturedBlobUrl(base64String);
-
-      };
-      reader.readAsDataURL(f);
+  // Validation per step
+  const validateStep = () => {
+    if (currentStep === 1) {
+      const name = document.getElementById("vf-fullName")?.value?.trim()
+      const phone = document.getElementById("vf-phone")?.value?.trim()
+      const vtype = document.getElementById("vf-visitorType")
+      if (!name) { Toast("Validation", "Full name is required", "warning"); return false }
+      if (!phone || phone.length !== 10) { Toast("Validation", "Valid 10-digit phone is required", "warning"); return false }
+      return true
     }
-  }
-
-
-  // documents change
-  function handleDocumentsChange(e) {
-    const files = e.target.files ? Array.from(e.target.files) : [];
-    setDocuments(files);
-  }
-
-  // text change
-  function handleInputChange(e) {
-    const { name, value } = e.target;
-    setVendorData((p) => ({ ...p, [name]: value }));
-  }
-
-  // submit form -> multipart/form-data
-  async function handleSubmit(e) {
-    e.preventDefault();
-    let formData = new FormData(e.target);
-
-    let formElement = Object.fromEntries(new FormData(e.currentTarget));
-    formElement["providedIDProofs"] = formData.getAll('providedIDProofs');
-    formElement["photo"] = capturedBlobUrl
-    formElement["attachments"] = files
-    console.log(formElement)
-
-    axios.post("addVisitor", formElement).
-      then((response) => {
-        const visitorId = response.data.visitorId || "N/A"
-        Toast("Visitor Registered Successfully!", `Visitor ID: ${visitorId}`, "success")
-        
-        // Reset form after successful submission
-        setTimeout(() => {
-          setOpenVisitorsForm(false)
-        }, 2000)
-      }).
-      catch((error) => {
-        Toast("Registration Failed", error.response?.data?.error || "Please try again", "danger")
-        console.log(error)
-      })
-    return null
-
-
-    // photo (captured or uploaded)
-    if (capturedBlobFile) {
-      fd.append("photo", capturedBlobFile);
+    if (currentStep === 2) {
+      if (!visitData.purposeOfVisit) { Toast("Validation", "Purpose of visit is required", "warning"); return false }
+      return true
     }
+    return true
+  }
 
-    // documents (multiple)
-    documents.forEach((doc) => fd.append("documents", doc));
+  const goNext = () => {
+    if (!validateStep()) return
+    setCurrentStep(s => Math.min(s + 1, 4))
+  }
+  const goPrev = () => setCurrentStep(s => Math.max(s - 1, 1))
 
+  async function handleSubmit() {
+    if (!agreedToTerms) { Toast("Validation", "Please confirm the terms", "warning"); return }
+    setIsSubmitting(true)
     try {
-      const res = await fetch("/api/visitors", {
-        method: "POST",
-        body: fd,
-      });
-
-      if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(txt || "Upload failed");
+      const payload = {
+        // Step 1
+        fullName: document.getElementById("vf-fullName")?.value || "",
+        phone: document.getElementById("vf-phone")?.value || "",
+        alternatePhone: document.getElementById("vf-altPhone")?.value || "",
+        email: document.getElementById("vf-email")?.value || "",
+        company: document.getElementById("vf-company")?.value || "",
+        designation: document.getElementById("vf-designation")?.value || "",
+        visitorType: document.getElementById("vf-visitorType-hidden")?.value || "",
+        groupSize: Number(document.getElementById("vf-groupSize")?.value) || 1,
+        photo,
+        address: document.getElementById("vf-address")?.value || "",
+        city: document.getElementById("vf-city")?.value || "",
+        state: document.getElementById("vf-state")?.value || "",
+        // Step 2
+        ...visitData,
+        // Step 3
+        ...securityData,
+        // Step 4
+        visitorSignature,
+        securitySignature,
       }
 
-      const data = await res.json();
-      alert("Uploaded successfully: " + data.message);
-      // reset form
-      setVendorData({
-        name: "",
-        company: "",
-        from: "",
-        phone: "",
-        gst: "",
-        address: "",
-        product: "",
-      });
-      setCapturedBlobFile(null);
-      setCapturedBlobUrl(null);
-      setDocuments([]);
-      setVisitorType("");
+      await axios.post("visitors", payload)
+      Toast("Success", "Visitor registered successfully!", "success")
+      setTimeout(() => { onSuccess?.(); setOpenVisitorsForm(false) }, 1500)
     } catch (err) {
-      console.error(err);
-      alert("Upload error: " + (err.message || err));
+      Toast("Error", err.response?.data?.error || "Registration failed", "danger")
+    } finally {
+      setIsSubmitting(false)
     }
   }
-  const visitorTypes = [
-    { key: "vendor", label: "Vendors / Suppliers" },
-    { key: "customer", label: "Customers / Clients" },
-    { key: "logistics", label: "Logistics / Transport Personnel" },
-    { key: "jobApplicant", label: "Job Applicants" },
-    { key: "government", label: "Government Officials" },
-    { key: "serviceProvider", label: "Service Providers" },
-    { key: "consultant", label: "Consultants" },
-    { key: "family", label: "Friends/Family of Employees" },
-    { key: "intern", label: "Interns / Trainees" },
-    { key: "media", label: "Media / PR" },
-  ];
 
+  const step1Data = {
+    fullName: formData?.fullName || "",
+    phone: formData?.phone || "",
+    alternatePhone: formData?.alternatePhone || "",
+    email: formData?.email || "",
+    company: formData?.company || "",
+    designation: formData?.designation || "",
+    visitorType: formData?.visitorType || "",
+    groupSize: formData?.groupSize || 1,
+    address: formData?.address || "",
+    city: formData?.city || "",
+    state: formData?.state || "",
+  }
 
-  const fileInputRef = useRef(null);
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className=" mx-auto">
+    <div className="">
+      <div className="w-full mx-auto">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-1">New Visitor Entry</h1>
-            <p className="text-gray-600">Fill in the visitor details below</p>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl shadow-lg">
+              <PencilSquareIcon className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {formData?._id ? "Edit Visitor" : "New Visitor Entry"}
+              </h1>
+              <p className="text-sm text-gray-500">Step {currentStep} of {STEPS.length}</p>
+            </div>
           </div>
-          <Button 
-            color="default" 
-            variant="flat" 
+          <Button
+            variant="flat"
             onPress={() => setOpenVisitorsForm(false)}
             startContent={<ArrowLeftIcon className="w-4 h-4" />}
           >
             Back
           </Button>
         </div>
-        
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-          <Form onSubmit={handleSubmit} className="p-6 sm:p-8">
-            <div className="space-y-8">
-              {/* Basic Info Section */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                  Basic Information
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <Select
-                    items={visitorTypes}
-                    label="Visitor Type"
-                    placeholder="Select type"
-                    color="secondary"
-                    variant="flat"
-                    name="visitorType"
-                    isRequired
-                    defaultSelectedKeys={[formData?.visitorType]}
-                  >
-                    {(visitorType) => <SelectItem key={visitorType.key}>{visitorType.label}</SelectItem>}
-                  </Select>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Photo Section */}
-                  <div className="md:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
-                    {capturedBlobUrl ? (
-                      <div className="flex flex-col gap-2">
-                        <img 
-                          src={capturedBlobUrl} 
-                          alt="captured" 
-                          className="w-full h-64 object-contain rounded-lg border-2 border-gray-200" 
-                        />
-                        <Button 
-                          type="button" 
-                          onPress={() => { setCapturedBlobUrl(null); setCapturedBlobFile(null); }} 
-                          color="danger"
-                          variant="flat"
-                          size="sm"
-                          fullWidth
-                        >
-                          Remove
-                        </Button>
+        {/* Progress */}
+        <Card shadow="sm" className="mb-6 rounded-xl">
+          <CardBody className="px-6 pt-5 pb-4">
+            <StepIndicator currentStep={currentStep} />
+            <Progress
+              value={(currentStep / STEPS.length) * 100}
+              color="secondary"
+              className="h-1.5"
+              aria-label="Form progress"
+            />
+          </CardBody>
+        </Card>
+
+        {/* Step Content */}
+        <Card shadow="sm" className="rounded-xl">
+          <CardBody className="p-6 sm:p-8">
+            {/* ── STEP 1 ── */}
+            {currentStep === 1 && (
+              <div className="space-y-6">
+                <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">Personal Information</h2>
+
+                {/* Visitor Type */}
+                <VisitorTypeSelect defaultValue={step1Data.visitorType} />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Photo */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-2">Visitor Photo</p>
+                    {photo ? (
+                      <div className="space-y-2">
+                        <img src={photo} alt="visitor" className="w-full h-52 object-cover rounded-xl border-2 border-purple-200" />
+                        <Button size="sm" color="danger" variant="flat" fullWidth onPress={() => setPhoto(null)}>Remove</Button>
                       </div>
                     ) : (
-                      <div className="flex flex-col gap-2">
-                        <div className="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
-                          <video 
-                            ref={videoRef} 
-                            autoPlay 
-                            playsInline 
-                            muted 
-                            className="w-full h-64 object-cover" 
-                          />
+                      <div className="space-y-2">
+                        <div className="relative bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 overflow-hidden h-52">
+                          <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
+                          <canvas ref={canvasRef} className="hidden" />
                           {!streaming && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                              <CameraIcon className="w-16 h-64 text-gray-400" />
+                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-400">
+                              <CameraIcon className="w-10 h-10" />
+                              <span className="text-xs">No photo</span>
                             </div>
                           )}
-                          <canvas ref={canvasRef} className="hidden" />
                         </div>
+                        <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handlePhotoUpload} />
                         {!streaming ? (
                           <div className="grid grid-cols-2 gap-2">
-                            <Button 
-                              type="button" 
-                              onPress={startCamera} 
-                              color="secondary"
-                              variant="flat"
-                              size="sm"
-                            >
-                              Camera
-                            </Button>
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              style={{ display: "none" }} 
-                              onChange={handlePhotoUpload} 
-                              ref={fileInputRef} 
-                            />
-                            <Button
-                              type="button"
-                              onPress={() => fileInputRef.current.click()}
-                              variant="flat"
-                              size="sm"
-                            >
-                              Upload
-                            </Button>
+                            <Button size="sm" color="secondary" variant="flat" onPress={startCamera}>📷 Camera</Button>
+                            <Button size="sm" variant="flat" onPress={() => fileInputRef.current?.click()}>📁 Upload</Button>
                           </div>
                         ) : (
                           <div className="grid grid-cols-2 gap-2">
-                            <Button 
-                              type="button" 
-                              onPress={capturePhoto} 
-                              color="success"
-                              variant="flat"
-                              size="sm"
-                            >
-                              Capture
-                            </Button>
-                            <Button 
-                              type="button" 
-                              onPress={stopCamera} 
-                              color="default"
-                              variant="flat"
-                              size="sm"
-                            >
-                              Cancel
-                            </Button>
+                            <Button size="sm" color="success" variant="flat" onPress={capturePhoto}>Capture</Button>
+                            <Button size="sm" variant="flat" onPress={stopCamera}>Cancel</Button>
                           </div>
                         )}
                       </div>
                     )}
                   </div>
 
-                  {/* Personal Details */}
-                  <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Personal Fields */}
+                  <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
-                      defaultValue={formData?.name}
+                      id="vf-fullName"
                       label="Full Name"
-                      name="name"
-                      color="secondary"
-                      type="text"
-                      variant="flat"
+                      placeholder="Enter full name"
                       isRequired
-                      startContent={<UserIcon className="w-5" />}
-                    />
-                    <Input
-                      label="Company/Organization"
-                      type="text"
                       color="secondary"
                       variant="flat"
-                      name="companyOrOrganization"
-                      startContent={<BuildingOffice2Icon className="w-5" />}
-                      defaultValue={formData?.companyOrOrganization}
+                      defaultValue={step1Data.fullName}
+                      startContent={<UserIcon className="w-4 h-4 text-gray-400" />}
                     />
                     <Input
-                      defaultValue={formData?.designationOrRole}
-                      name="designationOrRole"
-                      label="Designation / Role"
-                      startContent={<AcademicCapIcon className="w-5" />}
+                      id="vf-phone"
+                      label="Phone Number"
+                      placeholder="10-digit mobile"
+                      isRequired
                       color="secondary"
-                      type="text"
                       variant="flat"
-                    />
-                    <NumberInput
                       maxLength={10}
-                      defaultValue={formData?.phoneNumber}
-                      name="phoneNumber"
-                      formatOptions={{ useGrouping: false }}
-                      startContent={<PhoneIcon className="w-5" />}
-                      hideStepper
-                      color="secondary"
-                      label="Mobile Number"
-                      variant="flat"
-                      isRequired={true}
+                      defaultValue={step1Data.phone}
+                      startContent={<PhoneIcon className="w-4 h-4 text-gray-400" />}
                     />
                     <Input
-                      defaultValue={formData?.email}
-                      name="email"
-                      startContent={<EnvelopeIcon className="w-5" />}
+                      id="vf-altPhone"
+                      label="Alternate Phone"
+                      placeholder="Optional"
+                      color="secondary"
+                      variant="flat"
+                      maxLength={10}
+                      defaultValue={step1Data.alternatePhone}
+                      startContent={<PhoneIcon className="w-4 h-4 text-gray-400" />}
+                    />
+                    <Input
+                      id="vf-email"
                       label="Email Address"
-                      color="secondary"
                       type="email"
-                      variant="flat"
-                    />
-                    <Input
-                      defaultValue={formData?.gst}
-                      name="gst"
-                      startContent={<BuildingStorefrontIcon className="w-5" />}
-                      label="GST Number"
+                      placeholder="email@example.com"
                       color="secondary"
-                      type="text"
+                      variant="flat"
+                      defaultValue={step1Data.email}
+                      startContent={<EnvelopeIcon className="w-4 h-4 text-gray-400" />}
+                    />
+                    <Input
+                      id="vf-company"
+                      label="Company / Organization"
+                      placeholder="Company name"
+                      color="secondary"
+                      variant="flat"
+                      defaultValue={step1Data.company}
+                      startContent={<BuildingOffice2Icon className="w-4 h-4 text-gray-400" />}
+                    />
+                    <Input
+                      id="vf-designation"
+                      label="Designation / Job Title"
+                      placeholder="Role or title"
+                      color="secondary"
+                      variant="flat"
+                      defaultValue={step1Data.designation}
+                      startContent={<AcademicCapIcon className="w-4 h-4 text-gray-400" />}
+                    />
+                    <Input
+                      id="vf-groupSize"
+                      label="Group Size"
+                      type="number"
+                      min={1}
+                      defaultValue={String(step1Data.groupSize)}
+                      color="secondary"
                       variant="flat"
                     />
                     <Input
-                      defaultValue={formData?.address}
-                      name="address"
-                      startContent={<HomeModernIcon className="w-5" />}
+                      id="vf-city"
+                      label="City"
+                      color="secondary"
+                      variant="flat"
+                      defaultValue={step1Data.city}
+                      startContent={<MapPinIcon className="w-4 h-4 text-gray-400" />}
+                    />
+                    <Input
+                      id="vf-state"
+                      label="State"
+                      color="secondary"
+                      variant="flat"
+                      defaultValue={step1Data.state}
+                    />
+                    <Input
+                      id="vf-address"
                       label="Address"
-                      placeholder="Enter full address"
+                      placeholder="Full address"
                       color="secondary"
                       variant="flat"
-                      className="md:col-span-2"
+                      className="sm:col-span-2"
+                      defaultValue={step1Data.address}
+                      startContent={<HomeModernIcon className="w-4 h-4 text-gray-400" />}
                     />
                   </div>
                 </div>
               </div>
+            )}
 
-              <VisitorDetails formData={formData} />
-              <SecurityDetails formData={formData} setFiles={setFiles} files={files} />
-              <ExitDetails formData={formData} />
+            {/* ── STEP 2 ── */}
+            {currentStep === 2 && (
+              <VisitorDetails data={visitData} onChange={setVisitData} />
+            )}
 
-              {/* Submit Buttons */}
-              <div className="flex justify-end gap-3 pt-6 border-t">
-                <Button 
-                  type="button"
-                  variant="flat" 
-                  onPress={() => setOpenVisitorsForm(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  type="submit" 
-                  color="secondary" 
-                  variant="shadow"
-                >
-                  Register Visitor
-                </Button>
-              </div>
-            </div>
-          </Form>
+            {/* ── STEP 3 ── */}
+            {currentStep === 3 && (
+              <SecurityStep data={securityData} onChange={setSecurityData} />
+            )}
+
+            {/* ── STEP 4 ── */}
+            {currentStep === 4 && (
+              <ConfirmationStep
+                step1Data={step1Data}
+                photo={photo}
+                visitData={visitData}
+                securityData={securityData}
+                visitorSignature={visitorSignature}
+                setVisitorSignature={setVisitorSignature}
+                securitySignature={securitySignature}
+                setSecuritySignature={setSecuritySignature}
+                agreedToTerms={agreedToTerms}
+                setAgreedToTerms={setAgreedToTerms}
+              />
+            )}
+          </CardBody>
+        </Card>
+
+        {/* Navigation */}
+        <div className="flex justify-between mt-5">
+          <Button
+            variant="flat"
+            onPress={goPrev}
+            isDisabled={currentStep === 1}
+            startContent={<ArrowLeftIcon className="w-4 h-4" />}
+          >
+            Previous
+          </Button>
+          {currentStep < 4 ? (
+            <Button
+              color="secondary"
+              variant="shadow"
+              onPress={goNext}
+              endContent={<ArrowRightIcon className="w-4 h-4" />}
+            >
+              Next Step
+            </Button>
+          ) : (
+            <Button
+              color="secondary"
+              variant="shadow"
+              onPress={handleSubmit}
+              isLoading={isSubmitting}
+              startContent={!isSubmitting && <CheckIcon className="w-4 h-4" />}
+            >
+              {isSubmitting ? "Registering..." : "Register Visitor"}
+            </Button>
+          )}
         </div>
       </div>
     </div>
-  );
+  )
+}
+
+// Extracted so it can maintain a hidden input for reading the value
+function VisitorTypeSelect({ defaultValue }) {
+  const [selected, setSelected] = useState(new Set(defaultValue ? [defaultValue] : []))
+  const val = Array.from(selected)[0] || ""
+  return (
+    <div>
+      <input type="hidden" id="vf-visitorType-hidden" value={val} />
+      <Select
+        id="vf-visitorType"
+        items={visitorTypes}
+        label="Visitor Type"
+        placeholder="Select visitor type"
+        color="secondary"
+        variant="flat"
+        isRequired
+        selectedKeys={selected}
+        onSelectionChange={setSelected}
+        className="max-w-xs"
+      >
+        {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
+      </Select>
+    </div>
+  )
 }
