@@ -1,0 +1,145 @@
+import React from 'react';
+
+const UB = ({
+  labelL,
+  labelW,
+  labelH,
+  labelPF,
+  labelTF,
+  labelF,
+  labelC,
+  labelD,
+  labelLF,
+  labelCF
+}) => {
+  return (
+    <div className='w-[70rem] pt-2'>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3381.89 1540.78">
+  <defs>
+    <style>{`
+      .cls-1, .cls-3, .cls-4 {
+        fill: none;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-1 {
+        stroke: blue;
+      }
+
+      .cls-2 {
+        font-size: 45px;
+        fill: blue;
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        stroke: red;
+      }
+
+      .cls-4 {
+        stroke: #000;
+      }`}
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <line className="cls-1" x1="217.63" y1="539.88" x2="181.99" y2="547.65"/>
+      <line className="cls-1" x1="217.63" y1="555.43" x2="181.99" y2="547.65"/>
+      <line className="cls-1" x1="585.44" y1="547.65" x2="181.99" y2="547.65"/>
+      <text className="cls-2" transform="translate(618.41 561.85) scale(1 1.09)">{labelL}</text>
+      <line className="cls-1" x1="1039.26" y1="555.43" x2="1074.9" y2="547.65"/>
+      <line className="cls-1" x1="1039.26" y1="539.88" x2="1074.9" y2="547.65"/>
+      <line className="cls-1" x1="671.46" y1="547.65" x2="1074.9" y2="547.65"/>
+      <line className="cls-1" x1="1110.54" y1="546.25" x2="1074.9" y2="554.03"/>
+      <line className="cls-1" x1="1110.54" y1="561.81" x2="1074.9" y2="554.03"/>
+      <line className="cls-1" x1="1386.22" y1="554.03" x2="1074.9" y2="554.03"/>
+      <text className="cls-2" transform="translate(1403.5 572.75) scale(1 1.09)">{labelW}</text>
+      <line className="cls-1" x1="1747.92" y1="561.81" x2="1783.56" y2="554.03"/>
+      <line className="cls-1" x1="1747.92" y1="546.25" x2="1783.56" y2="554.03"/>
+      <line className="cls-1" x1="1472.24" y1="554.03" x2="1783.56" y2="554.03"/>
+      <line className="cls-1" x1="1644.93" y1="476.99" x2="1637.15" y2="441.35"/>
+      <line className="cls-1" x1="1629.38" y1="476.99" x2="1637.15" y2="441.35"/>
+      <line className="cls-1" x1="1637.15" y1="779.48" x2="1637.15" y2="441.35"/>
+      <text className="cls-2" transform="translate(1620.91 827.56) scale(1 1.09)">{labelH}</text>
+      <line className="cls-1" x1="1629.38" y1="1137.05" x2="1637.15" y2="1172.69"/>
+      <line className="cls-1" x1="1644.93" y1="1137.05" x2="1637.15" y2="1172.69"/>
+      <line className="cls-1" x1="1637.15" y1="834.56" x2="1637.15" y2="1172.69"/>
+      <line className="cls-1" x1="826.8" y1="109.91" x2="819.02" y2="74.27"/>
+      <line className="cls-1" x1="811.24" y1="109.91" x2="819.02" y2="74.27"/>
+      <line className="cls-1" x1="819.02" y1="226.73" x2="819.02" y2="74.27"/>
+      <text className="cls-2" transform="translate(788.74 270.47) scale(1 1.09)">{labelCF}</text>
+      <line className="cls-1" x1="811.24" y1="398.63" x2="819.02" y2="434.27"/>
+      <line className="cls-1" x1="826.8" y1="398.63" x2="819.02" y2="434.27"/>
+      <line className="cls-1" x1="819.02" y1="281.81" x2="819.02" y2="434.27"/>
+      <line className="cls-1" x1="47.14" y1="1061.21" x2="82.78" y2="1053.44"/>
+      <line className="cls-1" x1="47.14" y1="1045.66" x2="82.78" y2="1053.44"/>
+      <line className="cls-1" x1="11.5" y1="1053.44" x2="82.78" y2="1053.44"/>
+      <text className="cls-2" transform="translate(101.82 1069.64) scale(1 1.09)">{labelPF}</text>
+      <line className="cls-1" x1="217.63" y1="1045.66" x2="181.99" y2="1053.44"/>
+      <line className="cls-1" x1="217.63" y1="1061.21" x2="181.99" y2="1053.44"/>
+      <line className="cls-1" x1="253.27" y1="1053.44" x2="181.99" y2="1053.44"/>
+      <line className="cls-1" x1="82.78" y1="447.83" x2="82.78" y2="17.89"/>
+      <line className="cls-1" x1="118.42" y1="18.22" x2="82.78" y2="25.99"/>
+      <line className="cls-1" x1="118.42" y1="33.77" x2="82.78" y2="25.99"/>
+      <line className="cls-1" x1="1641.04" y1="25.99" x2="82.78" y2="25.99"/>
+      <text className="cls-2" transform="translate(1724.62 42.19) scale(1 1.09)">{labelC}</text>
+      <line className="cls-1" x1="3345.25" y1="33.77" x2="3380.89" y2="25.99"/>
+      <line className="cls-1" x1="3345.25" y1="18.22" x2="3380.89" y2="25.99"/>
+      <line className="cls-1" x1="1853.56" y1="25.99" x2="3380.89" y2="25.99"/>
+      <line className="cls-1" x1="3380.89" y1="17.89" x2="3380.89" y2="425.15"/>
+      <line className="cls-1" x1="177.13" y1="74.27" x2="7.44" y2="74.27"/>
+      <line className="cls-1" x1="23.32" y1="109.91" x2="15.54" y2="74.27"/>
+      <line className="cls-1" x1="7.76" y1="109.91" x2="15.54" y2="74.27"/>
+      <line className="cls-1" x1="15.54" y1="779.48" x2="15.54" y2="74.27"/>
+      <text className="cls-2" transform="translate(0 823.22) scale(1 1.09)">{labelD}</text>
+      <line className="cls-1" x1="7.76" y1="1504.14" x2="15.54" y2="1539.78"/>
+      <line className="cls-1" x1="23.32" y1="1504.14" x2="15.54" y2="1539.78"/>
+      <line className="cls-1" x1="15.54" y1="834.56" x2="15.54" y2="1539.78"/>
+      <line className="cls-1" x1="7.44" y1="1539.78" x2="177.13" y2="1539.78"/>
+      <line className="cls-3" x1="186.71" y1="434.27" x2="1070.18" y2="434.27"/>
+      <line className="cls-3" x1="1074.9" y1="441.35" x2="1074.9" y2="1172.69"/>
+      <line className="cls-3" x1="181.99" y1="1172.69" x2="181.99" y2="441.35"/>
+      <polyline className="cls-3" points="1783.56 1172.69 1783.56 441.35 1074.9 441.35"/>
+      <line className="cls-3" x1="1788.29" y1="434.27" x2="2671.75" y2="434.27"/>
+      <line className="cls-3" x1="2676.48" y1="441.35" x2="2676.48" y2="1172.69"/>
+      <line className="cls-4" x1="3380.89" y1="1172.69" x2="3380.89" y2="441.35"/>
+      <line className="cls-3" x1="3380.89" y1="441.35" x2="2676.48" y2="441.35"/>
+      <polyline className="cls-4" points="181.99 441.35 82.78 464.03 82.78 1150.02"/>
+      <line className="cls-4" x1="1063.56" y1="74.27" x2="193.33" y2="74.27"/>
+      <line className="cls-4" x1="1772.23" y1="74.27" x2="1086.24" y2="74.27"/>
+      <line className="cls-4" x1="2665.14" y1="74.27" x2="1794.9" y2="74.27"/>
+      <polyline className="cls-4" points="1074.9 441.35 1086.24 424.35 1086.24 74.27"/>
+      <polyline className="cls-4" points="1783.56 441.35 1772.23 424.35 1772.23 74.27"/>
+      <polyline className="cls-4" points="2676.48 441.35 2687.82 424.35 2687.82 74.27"/>
+      <polyline className="cls-4" points="3380.89 441.35 3369.55 424.35 3369.55 74.27 2687.82 74.27"/>
+      <polyline className="cls-4" points="1074.9 441.35 1063.56 424.35 1063.56 74.27"/>
+      <polyline className="cls-4" points="1783.56 441.35 1794.9 424.35 1794.9 74.27"/>
+      <polyline className="cls-4" points="2676.48 441.35 2665.14 424.35 2665.14 74.27"/>
+      <polyline className="cls-4" points="181.99 441.35 193.33 424.35 193.33 74.27"/>
+      <line className="cls-4" x1="1063.56" y1="1539.78" x2="193.33" y2="1539.78"/>
+      <line className="cls-4" x1="1772.23" y1="1539.78" x2="1086.24" y2="1539.78"/>
+      <line className="cls-4" x1="2665.14" y1="1539.78" x2="1794.9" y2="1539.78"/>
+      <polyline className="cls-4" points="1074.9 1172.69 1086.24 1189.7 1086.24 1539.78"/>
+      <polyline className="cls-4" points="1783.56 1172.69 1772.23 1189.7 1772.23 1539.78"/>
+      <polyline className="cls-4" points="2676.48 1172.69 2687.82 1189.7 2687.82 1539.78"/>
+      <polyline className="cls-4" points="3380.89 1172.69 3369.55 1189.7 3369.55 1539.78 2687.82 1539.78"/>
+      <polyline className="cls-4" points="1074.9 1172.69 1063.56 1189.7 1063.57 1539.78"/>
+      <polyline className="cls-4" points="1783.56 1172.69 1794.9 1189.7 1794.9 1539.78"/>
+      <polyline className="cls-4" points="2676.48 1172.69 2665.14 1189.7 2665.14 1539.78"/>
+      <polyline className="cls-4" points="181.99 1172.69 193.33 1189.7 193.33 1539.78"/>
+      <line className="cls-3" x1="186.71" y1="1179.78" x2="1070.18" y2="1179.78"/>
+      <line className="cls-3" x1="1783.56" y1="1172.69" x2="1074.9" y2="1172.69"/>
+      <line className="cls-4" x1="181.99" y1="1172.69" x2="82.78" y2="1150.01"/>
+      <line className="cls-3" x1="3380.89" y1="1172.69" x2="2676.48" y2="1172.69"/>
+      <line className="cls-3" x1="1788.29" y1="1179.78" x2="2671.75" y2="1179.78"/>
+    </g>
+  </g>
+</svg>
+
+</div>
+  );
+};
+
+export default UB;

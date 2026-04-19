@@ -1,0 +1,149 @@
+import React from 'react';
+
+const CB = ({
+  labelL,
+  labelW,
+  labelH,
+  labelPF,
+  labelTF,
+  labelF,
+  labelC,
+  labelD,
+  labelLF
+}) => {
+  return (
+    <div className='w-[70rem] pt-2'>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3022.68 1923.99">
+  <defs>
+    <style>{`
+      .cls-1, .cls-3, .cls-4 {
+        fill: none;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-1 {
+        stroke: blue;
+      }
+
+      .cls-2 {
+        font-size: 45px;
+        fill: blue;
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        stroke: red;
+      }
+
+      .cls-4 {
+        stroke: #000;
+      }`}
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <line className="cls-1" x1="227.62" y1="748.42" x2="183.99" y2="758.53"/>
+      <line className="cls-1" x1="227.62" y1="768.65" x2="183.99" y2="758.53"/>
+      <line className="cls-1" x1="607.4" y1="758.53" x2="183.99" y2="758.53"/>
+      <text className="cls-2" transform="translate(645.31 777.61) scale(0.94 1.09)">{labelW}</text>
+      <line className="cls-1" x1="1092.48" y1="768.65" x2="1136.11" y2="758.53"/>
+      <line className="cls-1" x1="1092.48" y1="748.42" x2="1136.11" y2="758.53"/>
+      <line className="cls-1" x1="712.7" y1="758.53" x2="1136.11" y2="758.53"/>
+      <line className="cls-1" x1="1179.74" y1="933.05" x2="1136.11" y2="943.16"/>
+      <line className="cls-1" x1="1179.74" y1="953.28" x2="1136.11" y2="943.16"/>
+      <line className="cls-1" x1="1283.4" y1="943.16" x2="1136.11" y2="943.16"/>
+      <text className="cls-2" transform="translate(1312.01 963.23) scale(0.94 1.09)">{labelH}</text>
+      <line className="cls-1" x1="1492.37" y1="953.28" x2="1536" y2="943.16"/>
+      <line className="cls-1" x1="1492.37" y1="933.05" x2="1536" y2="943.16"/>
+      <line className="cls-1" x1="1388.7" y1="943.16" x2="1536" y2="943.16"/>
+      <line className="cls-1" x1="2141.96" y1="411.6" x2="2132.44" y2="365.24"/>
+      <line className="cls-1" x1="2122.92" y1="411.6" x2="2132.44" y2="365.24"/>
+      <line className="cls-1" x1="2132.44" y1="835.3" x2="2132.44" y2="365.24"/>
+      <text className="cls-2" transform="translate(2120.76 889.2) scale(0.94 1.09)">{labelL}</text>
+      <line className="cls-1" x1="2122.92" y1="1330.65" x2="2132.44" y2="1377.01"/>
+      <line className="cls-1" x1="2141.96" y1="1330.65" x2="2132.44" y2="1377.01"/>
+      <line className="cls-1" x1="2132.44" y1="906.95" x2="2132.44" y2="1377.01"/>
+      <line className="cls-1" x1="227.62" y1="934.14" x2="183.99" y2="944.26"/>
+      <line className="cls-1" x1="227.62" y1="954.37" x2="183.99" y2="944.26"/>
+      <line className="cls-1" x1="271.25" y1="944.26" x2="183.99" y2="944.26"/>
+      <text className="cls-2" transform="translate(109.2 958.33) scale(0.94 1.09)">{labelTF}</text>
+      <line className="cls-1" x1="43.63" y1="954.37" x2="87.26" y2="944.26"/>
+      <line className="cls-1" x1="43.63" y1="934.14" x2="87.26" y2="944.26"/>
+      <line className="cls-1" y1="944.26" x2="87.26" y2="944.26"/>
+      <line className="cls-1" x1="723.88" y1="47.36" x2="714.36" y2="1"/>
+      <line className="cls-1" x1="704.84" y1="47.36" x2="714.36" y2="1"/>
+      <line className="cls-1" x1="714.36" y1="147.29" x2="714.36" y2="1"/>
+      <text/>      <line className="cls-1" x1="704.84" y1="318.88" x2="714.36" y2="365.24"/>
+      <line className="cls-1" x1="723.88" y1="318.88" x2="714.36" y2="365.24"/>
+      <line className="cls-1" x1="714.36" y1="218.94" x2="714.36" y2="365.24"/>
+      <line className="cls-1" x1="1271.99" y1="47.36" x2="1262.47" y2="1"/>
+      <line className="cls-1" x1="1252.95" y1="47.36" x2="1262.47" y2="1"/>
+      <line className="cls-1" x1="1262.47" y1="147.29" x2="1262.47" y2="1"/>
+      <text className="cls-2" transform="translate(1237.9 202.19) scale(0.94 1.09)">{labelLF}</text>
+      <line className="cls-1" x1="1252.95" y1="318.88" x2="1262.47" y2="365.24"/>
+      <line className="cls-1" x1="1271.99" y1="318.88" x2="1262.47" y2="365.24"/>
+      <line className="cls-1" x1="1262.47" y1="218.94" x2="1262.47" y2="365.24"/>
+      <line className="cls-1" x1="87.26" y1="1336.06" x2="87.26" y2="1895.94"/>
+      <line className="cls-1" x1="130.88" y1="1875.29" x2="87.26" y2="1885.41"/>
+      <line className="cls-1" x1="130.88" y1="1895.52" x2="87.26" y2="1885.41"/>
+      <line className="cls-1" x1="1413.93" y1="1885.41" x2="87.26" y2="1885.41"/>
+      <text className="cls-2" transform="translate(1466.53 1905.48) scale(0.94 1.09)">{labelC}</text>
+      <line className="cls-1" x1="2844.38" y1="1895.52" x2="2888.01" y2="1885.41"/>
+      <line className="cls-1" x1="2844.38" y1="1875.29" x2="2888.01" y2="1885.41"/>
+      <line className="cls-1" x1="1561.34" y1="1885.41" x2="2888.01" y2="1885.41"/>
+      <line className="cls-1" x1="2888.01" y1="1895.94" x2="2888.01" y2="1762.32"/>
+      <line className="cls-1" x1="2907.84" y1="1741.25" x2="3019.07" y2="1741.25"/>
+      <line className="cls-1" x1="2999.64" y1="1694.89" x2="3009.15" y2="1741.25"/>
+      <line className="cls-1" x1="3018.67" y1="1694.89" x2="3009.15" y2="1741.25"/>
+      <line className="cls-1" x1="3009.15" y1="928.02" x2="3009.15" y2="1741.25"/>
+      <text className="cls-2" transform="translate(2992.1 889.2) scale(0.94 1.09)">{labelD}</text>
+      <line className="cls-1" x1="3018.67" y1="47.36" x2="3009.15" y2="1"/>
+      <line className="cls-1" x1="2999.64" y1="47.36" x2="3009.15" y2="1"/>
+      <line className="cls-1" x1="3009.15" y1="797.68" x2="3009.15" y2="1"/>
+      <line className="cls-1" x1="3019.07" y1="1" x2="2907.84" y2="1"/>
+      <polyline className="cls-3" points="183.99 365.24 1136.11 365.24 1136.11 1377.01 183.99 1377.01 183.99 365.24"/>
+      <polyline className="cls-3" points="1136.11 1377.01 1536 1377.01 1536 365.24 1136.11 365.24"/>
+      <polyline className="cls-3" points="1536 365.24 2488.12 365.24 2488.12 1377.01 1536 1377.01"/>
+      <line className="cls-3" x1="2488.12" y1="1377.01" x2="2888.01" y2="1377.01"/>
+      <line className="cls-4" x1="2888.01" y1="1377.01" x2="2888.01" y2="365.24"/>
+      <line className="cls-3" x1="2888.01" y1="365.24" x2="2488.12" y2="365.24"/>
+      <path className="cls-4" d="M184,365.24h-7.62c-49.38.17-89,42.22-89.11,94.7v822.37c.15,52.48,39.73,94.53,89.11,94.7H184"/>
+      <path className="cls-4" d="M1001,61.71a42.69,42.69,0,0,0,0-40.47C994.19,8.7,981.65,1,968,1H554.36"/>
+      <path className="cls-4" d="M1707.38,152.77a2305.61,2305.61,0,0,1,609.36,0"/>
+      <polyline className="cls-4" points="1536 365.24 1334.15 181.09 1352.54 175.86 1404.01 58.57"/>
+      <line className="cls-4" x1="1136.11" y1="365.24" x2="1136.11" y2="1"/>
+      <path className="cls-4" d="M963.11,164.79a11.53,11.53,0,0,1-8.66-6.71,12.8,12.8,0,0,1,.38-11.38"/>
+      <path className="cls-4" d="M368.56,160.86a15.27,15.27,0,0,1-11.05,7.94"/>
+      <path className="cls-4" d="M357.52,168.79C263.16,182.88,191.25,264.28,184,365.24"/>
+      <path className="cls-4" d="M963.11,164.79c95.47,14.66,167.49,98.11,173,200.45"/>
+      <path className="cls-4" d="M368.56,160.86l37.38-68.8C436.61,35.67,493.07,1,554.36,1"/>
+      <line className="cls-4" x1="954.83" y1="146.7" x2="1001.01" y2="61.71"/>
+      <path className="cls-4" d="M1136.11,1h233.38c13,0,25.12,7.05,32.12,18.73a42.63,42.63,0,0,1,2.4,38.84"/>
+      <polyline className="cls-4" points="1536 365.24 1536 1 2488.12 1 2488.12 365.24 2689.97 181.09 2671.57 175.86 2620.11 58.57"/>
+      <path className="cls-4" d="M2888,365.24V1H2654.62c-13,0-25.11,7.05-32.12,18.73a42.66,42.66,0,0,0-2.39,38.84"/>
+      <path className="cls-4" d="M2888,1741.25H2654.62c-13,0-25.11-7-32.12-18.73a42.68,42.68,0,0,1-2.39-38.85"/>
+      <polyline className="cls-4" points="2488.12 1377.01 2689.97 1561.15 2671.57 1566.39 2620.11 1683.67"/>
+      <line className="cls-4" x1="2888.01" y1="1377.01" x2="2888.01" y2="1741.25"/>
+      <polyline className="cls-4" points="1536 1377.01 1536 1741.25 2488.12 1741.25 2488.12 1377.01"/>
+      <path className="cls-4" d="M1136.11,1741.25h233.38c13,0,25.12-7,32.12-18.73a42.65,42.65,0,0,0,2.4-38.85"/>
+      <path className="cls-4" d="M1707.38,1589.48a2305.61,2305.61,0,0,0,609.36,0"/>
+      <polyline className="cls-4" points="1536 1377.01 1334.15 1561.15 1352.54 1566.39 1404.01 1683.67"/>
+      <line className="cls-4" x1="1136.11" y1="1377.01" x2="1136.11" y2="1741.25"/>
+      <path className="cls-4" d="M963.11,1577.46a11.53,11.53,0,0,0-8.66,6.71,12.8,12.8,0,0,0,.38,11.38"/>
+      <path className="cls-4" d="M368.56,1581.39a15.24,15.24,0,0,0-11.05-7.94C263.16,1559.37,191.25,1478,184,1377"/>
+      <path className="cls-4" d="M963.11,1577.46c95.47-14.66,167.49-98.12,173-200.45"/>
+      <path className="cls-4" d="M368.56,1581.39l37.38,68.8c30.67,56.39,87.13,91,148.42,91.06"/>
+      <path className="cls-4" d="M954.83,1595.55l46.18,85a42.69,42.69,0,0,1,0,40.47c-6.82,12.54-19.36,20.23-33,20.24H554.36"/>
+      <text className="cls-2" transform="translate(686.73 204.19) scale(0.94 1.09)">LF</text>
+    </g>
+  </g>
+</svg>
+
+
+</div>
+  );
+};
+
+export default CB;

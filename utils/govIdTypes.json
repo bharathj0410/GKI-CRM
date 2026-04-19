@@ -1,0 +1,50 @@
+[
+  {
+    "key": "Aadhaar",
+    "label": "Aadhaar Card",
+    "regex": "^[0-9]{12}$",
+    "placeholder": "123456789012",
+    "validationMessage": "Aadhaar number must be exactly 12 digits and contain only numbers.",
+    "maxLength": 12
+  },
+  {
+    "key": "PAN",
+    "label": "PAN Card",
+    "regex": "^[A-Z]{5}[0-9]{4}[A-Z]{1}$",
+    "placeholder": "ABCDE1234F",
+    "validationMessage": "PAN number must be in format ABCDE1234F.",
+    "maxLength": 10
+  },
+  {
+    "key": "Passport",
+    "label": "Passport (India)",
+    "regex": "^[A-Z]{1}[0-9]{7}$",
+    "placeholder": "A1234567",
+    "validationMessage": "Passport number must start with a letter followed by 7 digits.",
+    "maxLength": 8
+  },
+  {
+    "key": "Voter ID",
+    "label": "Voter ID",
+    "regex": "^[A-Z]{3}[0-9]{7}$",
+    "placeholder": "ABC1234567",
+    "validationMessage": "Voter ID must be in format ABC1234567.",
+    "maxLength": 10
+  },
+  {
+    "key": "Driving License",
+    "label": "Driving License (India)",
+    "regex": "^[A-Z]{2}[0-9]{2}[0-9]{4}[0-9]{7}$",
+    "placeholder": "MH1420110001234",
+    "validationMessage": "Driving License must follow the format MH1420110001234.",
+    "maxLength": 15
+  },
+  {
+    "key": "Other",
+    "label": "Other",
+    "regex": null,
+    "placeholder": "Enter ID number",
+    "validationMessage": null,
+    "maxLength": 50
+  }
+]
