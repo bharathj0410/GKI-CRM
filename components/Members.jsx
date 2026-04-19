@@ -1,13 +1,13 @@
-import {Tabs, Tab, Card, CardBody} from "@heroui/react";
-import AddEmployee from "@/components/AddEmployee"
-import Employee from "@/components/Employee"
+import { Tabs, Tab, Card, CardBody } from "@heroui/react";
+import AddEmployee from "@/components/AddEmployee";
+import Employee from "@/components/Employee";
 
 export default function Members() {
   let tabs = [
     {
       id: "AddEmployee",
       label: "Add Employee",
-      content:<AddEmployee/>,
+      content: <AddEmployee />,
     },
     {
       id: "AddCustomer",
@@ -18,20 +18,26 @@ export default function Members() {
     {
       id: "ViewEmployee",
       label: "Employee",
-      content:<Employee/>
+      content: <Employee />,
     },
     {
       id: "ViewCustomer",
       label: "Customer",
-      content:<div>hello</div>
+      content: <div>hello</div>,
     },
   ];
 
   return (
     <div className="flex w-full flex-col justify-center items-center">
-      <Tabs aria-label="Dynamic tabs" items={tabs} color="secondary" size="md" className="">
+      <Tabs
+        aria-label="Dynamic tabs"
+        items={tabs}
+        color="secondary"
+        size="md"
+        className=""
+      >
         {(item) => (
-          <Tab key={item.id} title={item.label} >
+          <Tab key={item.id} title={item.label}>
             <div className=" ">{item.content}</div>
           </Tab>
         )}

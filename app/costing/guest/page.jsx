@@ -1,9 +1,9 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import { Button } from "@heroui/react";
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import GuestCustomerTable from "@/components/CostingTab/GuestCustomerTable"
-import Link from 'next/link';
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import GuestCustomerTable from "@/components/CostingTab/GuestCustomerTable";
+import Link from "next/link";
 
 export default function ExistingGuestPage() {
   return (
@@ -11,8 +11,8 @@ export default function ExistingGuestPage() {
       <div className="px-4 sm:px-6 lg:px-8 py-6 w-full">
         <div className="mb-5 flex items-center gap-3">
           <Link href="/costing">
-            <Button 
-              variant="flat" 
+            <Button
+              variant="flat"
               color="default"
               size="sm"
               startContent={<ArrowLeftIcon className="w-4 h-4" />}
@@ -22,10 +22,12 @@ export default function ExistingGuestPage() {
             </Button>
           </Link>
           <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Guest</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Guest
+          </h1>
         </div>
         <GuestCustomerTable type="guest" baseRoute="/costing/guest" />
       </div>
     </div>
-  )
+  );
 }

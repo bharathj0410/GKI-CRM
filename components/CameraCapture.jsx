@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@heroui/react';
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@heroui/react";
 
 export default function CameraCapture({ onCapture, onCancel }) {
   const videoRef = useRef(null);
@@ -13,17 +13,19 @@ export default function CameraCapture({ onCapture, onCancel }) {
     const startCamera = async () => {
       try {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-          const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
           setStream(mediaStream);
           if (videoRef.current) {
             videoRef.current.srcObject = mediaStream;
           }
         } else {
-          alert('Camera not supported on this device/browser.');
+          alert("Camera not supported on this device/browser.");
         }
       } catch (err) {
-        console.error('Error accessing camera:', err);
-        alert('Unable to access camera. Please check permissions.');
+        console.error("Error accessing camera:", err);
+        alert("Unable to access camera. Please check permissions.");
       }
     };
 
@@ -51,12 +53,12 @@ export default function CameraCapture({ onCapture, onCancel }) {
     const canvas = canvasRef.current;
 
     if (video && canvas) {
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext("2d");
       if (context) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageData = canvas.toDataURL('image/png');
+        const imageData = canvas.toDataURL("image/png");
         setPhoto(imageData);
       }
     }
@@ -84,10 +86,7 @@ export default function CameraCapture({ onCapture, onCancel }) {
             className="rounded-lg border shadow-lg w-full"
           />
           <div className="flex gap-2 justify-center">
-            <Button
-              color="secondary"
-              onPress={takePhoto}
-            >
+            <Button color="secondary" onPress={takePhoto}>
               Capture Photo
             </Button>
             {onCancel && (
@@ -106,7 +105,11 @@ export default function CameraCapture({ onCapture, onCancel }) {
       ) : (
         <>
           <div className="text-center">
-            <img src={photo} alt="Captured" className="rounded-lg border shadow-lg max-w-full mx-auto" />
+            <img
+              src={photo}
+              alt="Captured"
+              className="rounded-lg border shadow-lg max-w-full mx-auto"
+            />
           </div>
           <div className="flex gap-2 justify-center">
             <Button color="secondary" onPress={handleUsePhoto}>
@@ -118,7 +121,7 @@ export default function CameraCapture({ onCapture, onCancel }) {
           </div>
         </>
       )}
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 }

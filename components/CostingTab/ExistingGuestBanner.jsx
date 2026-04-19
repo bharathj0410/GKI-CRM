@@ -1,16 +1,16 @@
-import React from 'react'
-import { 
-    BuildingOffice2Icon, 
-    EnvelopeIcon, 
-    PhoneIcon, 
-    MapPinIcon,
-    UserIcon,
-    CubeTransparentIcon,
-    IdentificationIcon
-} from '@heroicons/react/24/outline'
-import { Avatar, Chip } from '@heroui/react'
+import React from "react";
+import {
+  BuildingOffice2Icon,
+  EnvelopeIcon,
+  PhoneIcon,
+  MapPinIcon,
+  UserIcon,
+  CubeTransparentIcon,
+  IdentificationIcon,
+} from "@heroicons/react/24/outline";
+import { Avatar, Chip } from "@heroui/react";
 
-export default function ExistingGuestBanner({data}) {
+export default function ExistingGuestBanner({ data }) {
   return (
     <div className="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-md border border-gray-200/80 dark:border-gray-700">
       {/* Accent bar */}
@@ -32,11 +32,11 @@ export default function ExistingGuestBanner({data}) {
 
           <div className="flex-1 min-w-0">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white truncate leading-tight">
-              {data['company/person_name']}
+              {data["company/person_name"]}
             </h2>
             <span className="inline-flex items-center gap-1.5 mt-1 text-xs font-medium text-secondary-600 dark:text-secondary-400">
               <CubeTransparentIcon className="w-3.5 h-3.5" />
-              {data['company_type']}
+              {data["company_type"]}
             </span>
           </div>
 
@@ -45,10 +45,11 @@ export default function ExistingGuestBanner({data}) {
             startContent={<IdentificationIcon className="w-4 h-4" />}
             classNames={{
               base: "bg-secondary-50 dark:bg-secondary-900/30 border border-secondary-200/60 dark:border-secondary-700/40",
-              content: "font-bold text-secondary-700 dark:text-secondary-300 text-xs"
+              content:
+                "font-bold text-secondary-700 dark:text-secondary-300 text-xs",
             }}
           >
-            {data['id']}
+            {data["id"]}
           </Chip>
         </div>
 
@@ -63,9 +64,11 @@ export default function ExistingGuestBanner({data}) {
               <UserIcon className="w-4.5 h-4.5 text-purple-500 dark:text-purple-400" />
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">Contact Person</p>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">
+                Contact Person
+              </p>
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                {data['contact_person_name']}
+                {data["contact_person_name"]}
               </p>
             </div>
           </div>
@@ -76,9 +79,11 @@ export default function ExistingGuestBanner({data}) {
               <EnvelopeIcon className="w-4.5 h-4.5 text-blue-500 dark:text-blue-400" />
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">Email</p>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">
+                Email
+              </p>
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                {data['contact_email']}
+                {data["contact_email"]}
               </p>
             </div>
           </div>
@@ -89,9 +94,11 @@ export default function ExistingGuestBanner({data}) {
               <PhoneIcon className="w-4.5 h-4.5 text-green-500 dark:text-green-400" />
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">Phone</p>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">
+                Phone
+              </p>
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                {data['contact_phone']}
+                {data["contact_phone"]}
               </p>
             </div>
           </div>
@@ -102,14 +109,22 @@ export default function ExistingGuestBanner({data}) {
               <MapPinIcon className="w-4.5 h-4.5 text-amber-500 dark:text-amber-400" />
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">Location</p>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium leading-none mb-0.5">
+                Location
+              </p>
               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                {[data['billing_city'], data['billing_state'], data['billing_country']].filter(Boolean).join(', ')}
+                {[
+                  data["billing_city"],
+                  data["billing_state"],
+                  data["billing_country"],
+                ]
+                  .filter(Boolean)
+                  .join(", ")}
               </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

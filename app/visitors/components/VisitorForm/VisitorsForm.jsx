@@ -1,27 +1,40 @@
-"use client"
-import React, { useRef, useState } from "react"
+"use client";
+import React, { useRef, useState } from "react";
 import {
-  Button, Input, Select, SelectItem,
-  Progress, Card, CardBody,
-} from "@heroui/react"
+  Button,
+  Input,
+  Select,
+  SelectItem,
+  Progress,
+  Card,
+  CardBody,
+} from "@heroui/react";
 import {
-  UserIcon, PhoneIcon, EnvelopeIcon, BuildingOffice2Icon,
-  AcademicCapIcon, CameraIcon, MapPinIcon, ArrowLeftIcon,
-  ArrowRightIcon, CheckIcon, PencilSquareIcon,
-} from "@heroicons/react/24/solid"
-import { HomeModernIcon } from "@heroicons/react/24/solid"
-import VisitorDetails from "./steps/VisitDetails"
-import SecurityStep from "./steps/SecurityStep"
-import ConfirmationStep from "./steps/ConfirmationStep"
-import Toast from "@/components/Toast"
-import axios from "@/lib/axios"
+  UserIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  BuildingOffice2Icon,
+  AcademicCapIcon,
+  CameraIcon,
+  MapPinIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/solid";
+import { HomeModernIcon } from "@heroicons/react/24/solid";
+import VisitorDetails from "./steps/VisitDetails";
+import SecurityStep from "./steps/SecurityStep";
+import ConfirmationStep from "./steps/ConfirmationStep";
+import Toast from "@/components/Toast";
+import axios from "@/lib/axios";
 
 const STEPS = [
   { id: 1, label: "Personal Info", icon: "👤" },
   { id: 2, label: "Visit Details", icon: "📋" },
   { id: 3, label: "Security", icon: "🔒" },
   { id: 4, label: "Confirm & Sign", icon: "✅" },
-]
+];
 
 const visitorTypes = [
   { key: "vendor", label: "Vendor / Supplier" },
@@ -39,49 +52,63 @@ const visitorTypes = [
   { key: "researcher", label: "Researcher" },
   { key: "delivery", label: "Delivery Person" },
   { key: "other", label: "Other" },
-]
+];
 
 function StepIndicator({ currentStep }) {
   return (
     <div className="flex items-center justify-between mb-8">
       {STEPS.map((step, idx) => {
-        const isCompleted = currentStep > step.id
-        const isActive = currentStep === step.id
+        const isCompleted = currentStep > step.id;
+        const isActive = currentStep === step.id;
         return (
           <React.Fragment key={step.id}>
             <div className="flex flex-col items-center gap-1.5">
-              <div className={`
+              <div
+                className={`
                 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300
                 ${isCompleted ? "bg-purple-600 text-white shadow-lg shadow-purple-200" : ""}
                 ${isActive ? "bg-purple-600 text-white ring-4 ring-purple-200 shadow-lg" : ""}
                 ${!isCompleted && !isActive ? "bg-gray-100 text-gray-400 border-2 border-gray-200" : ""}
-              `}>
-                {isCompleted ? <CheckIcon className="w-5 h-5" /> : <span>{step.icon}</span>}
+              `}
+              >
+                {isCompleted ? (
+                  <CheckIcon className="w-5 h-5" />
+                ) : (
+                  <span>{step.icon}</span>
+                )}
               </div>
-              <span className={`text-xs font-semibold whitespace-nowrap ${isActive ? "text-purple-700" : isCompleted ? "text-purple-500" : "text-gray-400"}`}>
+              <span
+                className={`text-xs font-semibold whitespace-nowrap ${isActive ? "text-purple-700" : isCompleted ? "text-purple-500" : "text-gray-400"}`}
+              >
                 {step.label}
               </span>
             </div>
             {idx < STEPS.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-2 rounded transition-all duration-500 ${currentStep > step.id ? "bg-purple-500" : "bg-gray-200"}`} />
+              <div
+                className={`flex-1 h-0.5 mx-2 rounded transition-all duration-500 ${currentStep > step.id ? "bg-purple-500" : "bg-gray-200"}`}
+              />
             )}
           </React.Fragment>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
-export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuccess }) {
-  const [currentStep, setCurrentStep] = useState(1)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export default function VisitorsForm({
+  setOpenVisitorsForm,
+  formData = {},
+  onSuccess,
+}) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Step 1 — personal info
-  const [photo, setPhoto] = useState(formData?.photo || null)
-  const [streaming, setStreaming] = useState(false)
-  const videoRef = useRef(null)
-  const canvasRef = useRef(null)
-  const fileInputRef = useRef(null)
+  const [photo, setPhoto] = useState(formData?.photo || null);
+  const [streaming, setStreaming] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   // Step 2 — visit details (lifted state for summary)
   const [visitData, setVisitData] = useState({
@@ -94,7 +121,7 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
     remarks: formData?.remarks || "",
     isRecurring: formData?.isRecurring || false,
     recurringFrequency: formData?.recurringFrequency || "",
-  })
+  });
 
   // Step 3 — security
   const [securityData, setSecurityData] = useState({
@@ -109,79 +136,93 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
     gatePassNumber: formData?.gatePassNumber || "",
     securityGuard: formData?.securityGuard || "",
     attachments: [],
-  })
+  });
 
   // Step 4 — signatures
-  const [visitorSignature, setVisitorSignature] = useState(null)
-  const [securitySignature, setSecuritySignature] = useState(null)
-  const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [visitorSignature, setVisitorSignature] = useState(null);
+  const [securitySignature, setSecuritySignature] = useState(null);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   // Step 1 form refs (for reading values during submit)
-  const step1Ref = useRef({})
+  const step1Ref = useRef({});
 
   // Camera
   async function startCamera() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
-        videoRef.current.srcObject = stream
-        videoRef.current.play()
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
       }
-      setStreaming(true)
+      setStreaming(true);
     } catch {
-      Toast("Camera Error", "Could not access camera", "danger")
+      Toast("Camera Error", "Could not access camera", "danger");
     }
   }
   function stopCamera() {
     if (videoRef.current?.srcObject) {
-      videoRef.current.srcObject.getTracks().forEach(t => t.stop())
-      videoRef.current.srcObject = null
+      videoRef.current.srcObject.getTracks().forEach((t) => t.stop());
+      videoRef.current.srcObject = null;
     }
-    setStreaming(false)
+    setStreaming(false);
   }
   function capturePhoto() {
-    if (!videoRef.current || !canvasRef.current) return
-    canvasRef.current.width = 640
-    canvasRef.current.height = 480
-    canvasRef.current.getContext("2d").drawImage(videoRef.current, 0, 0, 640, 480)
-    const base64 = canvasRef.current.toDataURL("image/jpeg", 0.9)
-    setPhoto(base64)
-    stopCamera()
+    if (!videoRef.current || !canvasRef.current) return;
+    canvasRef.current.width = 640;
+    canvasRef.current.height = 480;
+    canvasRef.current
+      .getContext("2d")
+      .drawImage(videoRef.current, 0, 0, 640, 480);
+    const base64 = canvasRef.current.toDataURL("image/jpeg", 0.9);
+    setPhoto(base64);
+    stopCamera();
   }
   function handlePhotoUpload(e) {
-    const f = e.target.files?.[0]
-    if (!f) return
-    const reader = new FileReader()
-    reader.onloadend = () => setPhoto(reader.result)
-    reader.readAsDataURL(f)
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onloadend = () => setPhoto(reader.result);
+    reader.readAsDataURL(f);
   }
 
   // Validation per step
   const validateStep = () => {
     if (currentStep === 1) {
-      const name = document.getElementById("vf-fullName")?.value?.trim()
-      const phone = document.getElementById("vf-phone")?.value?.trim()
-      const vtype = document.getElementById("vf-visitorType")
-      if (!name) { Toast("Validation", "Full name is required", "warning"); return false }
-      if (!phone || phone.length !== 10) { Toast("Validation", "Valid 10-digit phone is required", "warning"); return false }
-      return true
+      const name = document.getElementById("vf-fullName")?.value?.trim();
+      const phone = document.getElementById("vf-phone")?.value?.trim();
+      const vtype = document.getElementById("vf-visitorType");
+      if (!name) {
+        Toast("Validation", "Full name is required", "warning");
+        return false;
+      }
+      if (!phone || phone.length !== 10) {
+        Toast("Validation", "Valid 10-digit phone is required", "warning");
+        return false;
+      }
+      return true;
     }
     if (currentStep === 2) {
-      if (!visitData.purposeOfVisit) { Toast("Validation", "Purpose of visit is required", "warning"); return false }
-      return true
+      if (!visitData.purposeOfVisit) {
+        Toast("Validation", "Purpose of visit is required", "warning");
+        return false;
+      }
+      return true;
     }
-    return true
-  }
+    return true;
+  };
 
   const goNext = () => {
-    if (!validateStep()) return
-    setCurrentStep(s => Math.min(s + 1, 4))
-  }
-  const goPrev = () => setCurrentStep(s => Math.max(s - 1, 1))
+    if (!validateStep()) return;
+    setCurrentStep((s) => Math.min(s + 1, 4));
+  };
+  const goPrev = () => setCurrentStep((s) => Math.max(s - 1, 1));
 
   async function handleSubmit() {
-    if (!agreedToTerms) { Toast("Validation", "Please confirm the terms", "warning"); return }
-    setIsSubmitting(true)
+    if (!agreedToTerms) {
+      Toast("Validation", "Please confirm the terms", "warning");
+      return;
+    }
+    setIsSubmitting(true);
     try {
       const payload = {
         // Step 1
@@ -191,7 +232,8 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
         email: document.getElementById("vf-email")?.value || "",
         company: document.getElementById("vf-company")?.value || "",
         designation: document.getElementById("vf-designation")?.value || "",
-        visitorType: document.getElementById("vf-visitorType-hidden")?.value || "",
+        visitorType:
+          document.getElementById("vf-visitorType-hidden")?.value || "",
         groupSize: Number(document.getElementById("vf-groupSize")?.value) || 1,
         photo,
         address: document.getElementById("vf-address")?.value || "",
@@ -204,15 +246,22 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
         // Step 4
         visitorSignature,
         securitySignature,
-      }
+      };
 
-      await axios.post("visitors", payload)
-      Toast("Success", "Visitor registered successfully!", "success")
-      setTimeout(() => { onSuccess?.(); setOpenVisitorsForm(false) }, 1500)
+      await axios.post("visitors", payload);
+      Toast("Success", "Visitor registered successfully!", "success");
+      setTimeout(() => {
+        onSuccess?.();
+        setOpenVisitorsForm(false);
+      }, 1500);
     } catch (err) {
-      Toast("Error", err.response?.data?.error || "Registration failed", "danger")
+      Toast(
+        "Error",
+        err.response?.data?.error || "Registration failed",
+        "danger",
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
@@ -228,7 +277,7 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
     address: formData?.address || "",
     city: formData?.city || "",
     state: formData?.state || "",
-  }
+  };
 
   return (
     <div className="">
@@ -243,7 +292,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
               <h1 className="text-2xl font-bold text-gray-900">
                 {formData?._id ? "Edit Visitor" : "New Visitor Entry"}
               </h1>
-              <p className="text-sm text-gray-500">Step {currentStep} of {STEPS.length}</p>
+              <p className="text-sm text-gray-500">
+                Step {currentStep} of {STEPS.length}
+              </p>
             </div>
           </div>
           <Button
@@ -274,7 +325,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
             {/* ── STEP 1 ── */}
             {currentStep === 1 && (
               <div className="space-y-6">
-                <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">Personal Information</h2>
+                <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">
+                  Personal Information
+                </h2>
 
                 {/* Visitor Type */}
                 <VisitorTypeSelect defaultValue={step1Data.visitorType} />
@@ -282,16 +335,36 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Photo */}
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Visitor Photo</p>
+                    <p className="text-sm font-medium text-gray-700 mb-2">
+                      Visitor Photo
+                    </p>
                     {photo ? (
                       <div className="space-y-2">
-                        <img src={photo} alt="visitor" className="w-full h-52 object-cover rounded-xl border-2 border-purple-200" />
-                        <Button size="sm" color="danger" variant="flat" fullWidth onPress={() => setPhoto(null)}>Remove</Button>
+                        <img
+                          src={photo}
+                          alt="visitor"
+                          className="w-full h-52 object-cover rounded-xl border-2 border-purple-200"
+                        />
+                        <Button
+                          size="sm"
+                          color="danger"
+                          variant="flat"
+                          fullWidth
+                          onPress={() => setPhoto(null)}
+                        >
+                          Remove
+                        </Button>
                       </div>
                     ) : (
                       <div className="space-y-2">
                         <div className="relative bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 overflow-hidden h-52">
-                          <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
+                          <video
+                            ref={videoRef}
+                            autoPlay
+                            playsInline
+                            muted
+                            className="w-full h-full object-cover"
+                          />
                           <canvas ref={canvasRef} className="hidden" />
                           {!streaming && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-400">
@@ -300,16 +373,48 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                             </div>
                           )}
                         </div>
-                        <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handlePhotoUpload} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          ref={fileInputRef}
+                          onChange={handlePhotoUpload}
+                        />
                         {!streaming ? (
                           <div className="grid grid-cols-2 gap-2">
-                            <Button size="sm" color="secondary" variant="flat" onPress={startCamera}>📷 Camera</Button>
-                            <Button size="sm" variant="flat" onPress={() => fileInputRef.current?.click()}>📁 Upload</Button>
+                            <Button
+                              size="sm"
+                              color="secondary"
+                              variant="flat"
+                              onPress={startCamera}
+                            >
+                              📷 Camera
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="flat"
+                              onPress={() => fileInputRef.current?.click()}
+                            >
+                              📁 Upload
+                            </Button>
                           </div>
                         ) : (
                           <div className="grid grid-cols-2 gap-2">
-                            <Button size="sm" color="success" variant="flat" onPress={capturePhoto}>Capture</Button>
-                            <Button size="sm" variant="flat" onPress={stopCamera}>Cancel</Button>
+                            <Button
+                              size="sm"
+                              color="success"
+                              variant="flat"
+                              onPress={capturePhoto}
+                            >
+                              Capture
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="flat"
+                              onPress={stopCamera}
+                            >
+                              Cancel
+                            </Button>
                           </div>
                         )}
                       </div>
@@ -326,7 +431,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       color="secondary"
                       variant="flat"
                       defaultValue={step1Data.fullName}
-                      startContent={<UserIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <UserIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-phone"
@@ -337,7 +444,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       variant="flat"
                       maxLength={10}
                       defaultValue={step1Data.phone}
-                      startContent={<PhoneIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <PhoneIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-altPhone"
@@ -347,7 +456,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       variant="flat"
                       maxLength={10}
                       defaultValue={step1Data.alternatePhone}
-                      startContent={<PhoneIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <PhoneIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-email"
@@ -357,7 +468,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       color="secondary"
                       variant="flat"
                       defaultValue={step1Data.email}
-                      startContent={<EnvelopeIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <EnvelopeIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-company"
@@ -366,7 +479,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       color="secondary"
                       variant="flat"
                       defaultValue={step1Data.company}
-                      startContent={<BuildingOffice2Icon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <BuildingOffice2Icon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-designation"
@@ -375,7 +490,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       color="secondary"
                       variant="flat"
                       defaultValue={step1Data.designation}
-                      startContent={<AcademicCapIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <AcademicCapIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-groupSize"
@@ -392,7 +509,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       color="secondary"
                       variant="flat"
                       defaultValue={step1Data.city}
-                      startContent={<MapPinIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <MapPinIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                     <Input
                       id="vf-state"
@@ -409,7 +528,9 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
                       variant="flat"
                       className="sm:col-span-2"
                       defaultValue={step1Data.address}
-                      startContent={<HomeModernIcon className="w-4 h-4 text-gray-400" />}
+                      startContent={
+                        <HomeModernIcon className="w-4 h-4 text-gray-400" />
+                      }
                     />
                   </div>
                 </div>
@@ -477,13 +598,15 @@ export default function VisitorsForm({ setOpenVisitorsForm, formData = {}, onSuc
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Extracted so it can maintain a hidden input for reading the value
 function VisitorTypeSelect({ defaultValue }) {
-  const [selected, setSelected] = useState(new Set(defaultValue ? [defaultValue] : []))
-  const val = Array.from(selected)[0] || ""
+  const [selected, setSelected] = useState(
+    new Set(defaultValue ? [defaultValue] : []),
+  );
+  const val = Array.from(selected)[0] || "";
   return (
     <div>
       <input type="hidden" id="vf-visitorType-hidden" value={val} />
@@ -502,5 +625,5 @@ function VisitorTypeSelect({ defaultValue }) {
         {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
       </Select>
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion, useMotionValue } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useMotionValue } from "framer-motion";
+import { useRef } from "react";
 
 export default function DraggableCard({ data }) {
   const constraintsRef = useRef(null);
@@ -20,15 +20,15 @@ export default function DraggableCard({ data }) {
           dragConstraints={constraintsRef}
           dragElastic={0}
           style={{ x, y }}
-          whileTap={{ cursor: 'grabbing' }}
+          whileTap={{ cursor: "grabbing" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-xl shadow-xl flex items-center justify-center p-4 bg-white"
         >
           <div>
-          <img
-            src={data[0].product_diagram}
-            alt="product_diagram"
-            className="max-w-[300px] max-h-[300px] object-contain"
-          />
+            <img
+              src={data[0].product_diagram}
+              alt="product_diagram"
+              className="max-w-[300px] max-h-[300px] object-contain"
+            />
             hhee
           </div>
         </motion.div>

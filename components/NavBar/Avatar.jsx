@@ -1,11 +1,18 @@
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@heroui/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Avatar,
+  User,
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 export default function App() {
-    const router = useRouter()
-    // const onClickConfig = ()=>{
-    //     router.push("config")
-    // }
+  const router = useRouter();
+  // const onClickConfig = ()=>{
+  //     router.push("config")
+  // }
   return (
     <div className="flex items-center gap-4">
       <Dropdown placement="bottom-end">
@@ -27,7 +34,14 @@ export default function App() {
           {/* <DropdownItem key="team_settings">Team Settings</DropdownItem>
           <DropdownItem key="analytics">Analytics</DropdownItem>
           <DropdownItem key="system">System</DropdownItem> */}
-          <DropdownItem key="configurations" onPress={()=>{router.push("config")}}>Configurations</DropdownItem>
+          <DropdownItem
+            key="configurations"
+            onPress={() => {
+              router.push("config");
+            }}
+          >
+            Configurations
+          </DropdownItem>
           {/* <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem> */}
           <DropdownItem key="logout" color="danger">
             Log Out

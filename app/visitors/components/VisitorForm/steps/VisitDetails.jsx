@@ -1,13 +1,17 @@
-"use client"
-import React, { useState } from "react"
-import { Input, Select, SelectItem, Textarea, Switch } from "@heroui/react"
-import { I18nProvider } from "@react-aria/i18n"
-import { getLocalTimeZone, now, parseDateTime } from "@internationalized/date"
-import { DatePicker } from "@heroui/react"
+"use client";
+import React, { useState } from "react";
+import { Input, Select, SelectItem, Textarea, Switch } from "@heroui/react";
+import { I18nProvider } from "@react-aria/i18n";
+import { getLocalTimeZone, now, parseDateTime } from "@internationalized/date";
+import { DatePicker } from "@heroui/react";
 import {
-  CubeIcon, IdentificationIcon, BuildingOffice2Icon,
-  ClockIcon, DocumentTextIcon, ArrowPathIcon,
-} from "@heroicons/react/24/solid"
+  CubeIcon,
+  IdentificationIcon,
+  BuildingOffice2Icon,
+  ClockIcon,
+  DocumentTextIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/solid";
 
 const purposesOfVisit = [
   { key: "materialDelivery", label: "Material Delivery" },
@@ -28,7 +32,7 @@ const purposesOfVisit = [
   { key: "eventMedia", label: "Event / Media Coverage" },
   { key: "personalVisit", label: "Personal Visit" },
   { key: "other", label: "Other" },
-]
+];
 
 const visitLocations = [
   { key: "securityRoom", label: "Security Room" },
@@ -41,7 +45,7 @@ const visitLocations = [
   { key: "generators", label: "Generator Room" },
   { key: "wasteLoadingUnit", label: "Waste Loading Unit" },
   { key: "other", label: "Other" },
-]
+];
 
 const durations = [
   { key: "30min", label: "30 Minutes" },
@@ -50,30 +54,32 @@ const durations = [
   { key: "4hr", label: "4 Hours" },
   { key: "halfDay", label: "Half Day" },
   { key: "fullDay", label: "Full Day" },
-]
+];
 
 const frequencies = [
   { key: "daily", label: "Daily" },
   { key: "weekly", label: "Weekly" },
   { key: "monthly", label: "Monthly" },
-]
+];
 
 function zonedToCalendarDateTime(str) {
   try {
-    const clean = str.replace(/\[.*\]/, "")
-    const formatted = new Date(clean).toISOString().slice(0, 16)
-    return parseDateTime(formatted)
+    const clean = str.replace(/\[.*\]/, "");
+    const formatted = new Date(clean).toISOString().slice(0, 16);
+    return parseDateTime(formatted);
   } catch {
-    return now(getLocalTimeZone())
+    return now(getLocalTimeZone());
   }
 }
 
 export default function VisitDetails({ data, onChange }) {
-  const set = (key, val) => onChange(prev => ({ ...prev, [key]: val }))
+  const set = (key, val) => onChange((prev) => ({ ...prev, [key]: val }));
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">Visit Details</h2>
+      <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">
+        Visit Details
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <I18nProvider locale="en-IN">
@@ -97,8 +103,12 @@ export default function VisitDetails({ data, onChange }) {
           color="secondary"
           variant="flat"
           isRequired
-          selectedKeys={data.purposeOfVisit ? new Set([data.purposeOfVisit]) : new Set()}
-          onSelectionChange={(keys) => set("purposeOfVisit", Array.from(keys)[0] || "")}
+          selectedKeys={
+            data.purposeOfVisit ? new Set([data.purposeOfVisit]) : new Set()
+          }
+          onSelectionChange={(keys) =>
+            set("purposeOfVisit", Array.from(keys)[0] || "")
+          }
           startContent={<CubeIcon className="w-4 h-4 text-gray-400" />}
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
@@ -112,7 +122,9 @@ export default function VisitDetails({ data, onChange }) {
             variant="flat"
             value={data.visitDetails}
             onValueChange={(v) => set("visitDetails", v)}
-            startContent={<DocumentTextIcon className="w-4 h-4 text-gray-400" />}
+            startContent={
+              <DocumentTextIcon className="w-4 h-4 text-gray-400" />
+            }
           />
         )}
 
@@ -123,7 +135,9 @@ export default function VisitDetails({ data, onChange }) {
           variant="flat"
           value={data.meetingWith}
           onValueChange={(v) => set("meetingWith", v)}
-          startContent={<IdentificationIcon className="w-4 h-4 text-gray-400" />}
+          startContent={
+            <IdentificationIcon className="w-4 h-4 text-gray-400" />
+          }
         />
 
         <Select
@@ -132,9 +146,15 @@ export default function VisitDetails({ data, onChange }) {
           placeholder="Select location"
           color="secondary"
           variant="flat"
-          selectedKeys={data.visitLocation ? new Set([data.visitLocation]) : new Set()}
-          onSelectionChange={(keys) => set("visitLocation", Array.from(keys)[0] || "")}
-          startContent={<BuildingOffice2Icon className="w-4 h-4 text-gray-400" />}
+          selectedKeys={
+            data.visitLocation ? new Set([data.visitLocation]) : new Set()
+          }
+          onSelectionChange={(keys) =>
+            set("visitLocation", Array.from(keys)[0] || "")
+          }
+          startContent={
+            <BuildingOffice2Icon className="w-4 h-4 text-gray-400" />
+          }
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
         </Select>
@@ -145,8 +165,12 @@ export default function VisitDetails({ data, onChange }) {
           placeholder="Select duration"
           color="secondary"
           variant="flat"
-          selectedKeys={data.expectedDuration ? new Set([data.expectedDuration]) : new Set()}
-          onSelectionChange={(keys) => set("expectedDuration", Array.from(keys)[0] || "")}
+          selectedKeys={
+            data.expectedDuration ? new Set([data.expectedDuration]) : new Set()
+          }
+          onSelectionChange={(keys) =>
+            set("expectedDuration", Array.from(keys)[0] || "")
+          }
           startContent={<ClockIcon className="w-4 h-4 text-gray-400" />}
         >
           {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
@@ -166,8 +190,12 @@ export default function VisitDetails({ data, onChange }) {
       <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-xl border border-purple-100">
         <ArrowPathIcon className="w-5 h-5 text-purple-600 flex-shrink-0" />
         <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-800">Recurring Visit?</p>
-          <p className="text-xs text-gray-500">Enable if this visitor comes regularly</p>
+          <p className="text-sm font-semibold text-gray-800">
+            Recurring Visit?
+          </p>
+          <p className="text-xs text-gray-500">
+            Enable if this visitor comes regularly
+          </p>
         </div>
         <Switch
           color="secondary"
@@ -182,13 +210,19 @@ export default function VisitDetails({ data, onChange }) {
             color="secondary"
             variant="flat"
             className="w-36"
-            selectedKeys={data.recurringFrequency ? new Set([data.recurringFrequency]) : new Set()}
-            onSelectionChange={(keys) => set("recurringFrequency", Array.from(keys)[0] || "")}
+            selectedKeys={
+              data.recurringFrequency
+                ? new Set([data.recurringFrequency])
+                : new Set()
+            }
+            onSelectionChange={(keys) =>
+              set("recurringFrequency", Array.from(keys)[0] || "")
+            }
           >
             {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
           </Select>
         )}
       </div>
     </div>
-  )
+  );
 }

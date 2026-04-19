@@ -1,9 +1,26 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Input, Form, Switch } from '@heroui/react';
-import { BuildingOffice2Icon, CubeTransparentIcon, UserIcon, EnvelopeIcon, PhoneIcon, PhotoIcon, BuildingStorefrontIcon } from '@heroicons/react/24/outline';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import React, { useRef, useState, useEffect } from "react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  Input,
+  Form,
+  Switch,
+} from "@heroui/react";
+import {
+  BuildingOffice2Icon,
+  CubeTransparentIcon,
+  UserIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  PhotoIcon,
+  BuildingStorefrontIcon,
+} from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import axios from "@/lib/axios";
-import Toast from '../Toast';
+import Toast from "../Toast";
 
 export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
   const [image, setImage] = useState(null);
@@ -73,14 +90,18 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
         Toast("Error", response?.data?.error || "Failed to update", "danger");
       }
     } catch (error) {
-      Toast("Error", error?.response?.data?.error || "Failed to update", "danger");
+      Toast(
+        "Error",
+        error?.response?.data?.error || "Failed to update",
+        "danger",
+      );
       console.error(error);
     }
   };
 
   return (
-    <Modal 
-      isOpen={isOpen} 
+    <Modal
+      isOpen={isOpen}
       onClose={onClose}
       size="5xl"
       scrollBehavior="inside"
@@ -93,47 +114,56 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1 border-b border-gray-200 dark:border-gray-700 flex-shrink-0 py-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Guest Information</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Update guest details and billing information</p>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Edit Guest Information
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Update guest details and billing information
+              </p>
             </ModalHeader>
             <ModalBody className="py-6 overflow-y-auto flex-1 min-h-0">
               <Form className="w-full flex flex-col gap-6" onSubmit={onSubmit}>
                 <div className="grid grid-cols-4 w-full gap-4">
-                  <Input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleFileChange} 
-                    ref={fileInputRef} 
-                    className='hidden' 
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                    className="hidden"
                   />
-                  
+
                   {/* Logo Upload Section */}
-                  <div className='flex relative row-span-3'>
+                  <div className="flex relative row-span-3">
                     {(image || imagePreview) && (
-                      <div 
-                        role="button" 
+                      <div
+                        role="button"
                         onClick={() => {
                           setImage(null);
                           setImagePreview(null);
-                          if (fileInputRef.current) fileInputRef.current.value = null;
+                          if (fileInputRef.current)
+                            fileInputRef.current.value = null;
                         }}
                         className="absolute top-0 right-0 z-20"
                       >
-                        <TrashIcon className='w-6 text-red-600' />
+                        <TrashIcon className="w-6 text-red-600" />
                       </div>
                     )}
-                    <div role="button" onClick={handleButtonClick} className='w-full'>
-                      <div className='w-full'>
-                        {(image || imagePreview) ? (
-                          <img 
-                            src={imagePreview} 
-                            alt="Preview" 
-                            className='h-[15rem] w-[15rem] object-cover z-10 relative rounded-full' 
+                    <div
+                      role="button"
+                      onClick={handleButtonClick}
+                      className="w-full"
+                    >
+                      <div className="w-full">
+                        {image || imagePreview ? (
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="h-[15rem] w-[15rem] object-cover z-10 relative rounded-full"
                           />
                         ) : (
-                          <div className='bg-zinc-100 dark:bg-gray-800 h-[15rem] w-[15rem] flex flex-col items-center justify-center rounded-full text-zinc-500'>
-                            <PhotoIcon className='w-10' />
-                            <p className='text-xs font-bold'>Upload Logo</p>
+                          <div className="bg-zinc-100 dark:bg-gray-800 h-[15rem] w-[15rem] flex flex-col items-center justify-center rounded-full text-zinc-500">
+                            <PhotoIcon className="w-10" />
+                            <p className="text-xs font-bold">Upload Logo</p>
                           </div>
                         )}
                       </div>
@@ -141,7 +171,7 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                   </div>
 
                   {/* Company Name */}
-                  <div className='w-full col-span-3'>
+                  <div className="w-full col-span-3">
                     <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 p-1">
                       Company Name / Person Name
                     </p>
@@ -152,15 +182,15 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                         name="company/person_name"
                         className="w-full"
                         placeholder="e.g., Acme Corp"
-                        color='secondary'
-                        variant='flat'
-                        defaultValue={data?.['company/person_name']}
+                        color="secondary"
+                        variant="flat"
+                        defaultValue={data?.["company/person_name"]}
                       />
                     </div>
                   </div>
 
                   {/* Company Type */}
-                  <div className='w-full col-span-3'>
+                  <div className="w-full col-span-3">
                     <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 p-1">
                       Company Type
                     </p>
@@ -171,14 +201,14 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                         name="company_type"
                         className=""
                         placeholder="e.g., Private Limited"
-                        color='secondary'
+                        color="secondary"
                         defaultValue={data?.company_type}
                       />
                     </div>
                   </div>
 
                   {/* GST Number */}
-                  <div className='w-full col-span-3'>
+                  <div className="w-full col-span-3">
                     <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 p-1">
                       GST Number (optional)
                     </p>
@@ -188,7 +218,7 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                         type="text"
                         name="gst_number"
                         className="w-full"
-                        color='secondary'
+                        color="secondary"
                         defaultValue={data?.gst_number}
                       />
                     </div>
@@ -196,126 +226,134 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                 </div>
 
                 {/* Address */}
-                <div className='w-full'>
-                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address</p>
-                  <Input 
-                    type="text" 
-                    name="address_line" 
-                    placeholder="Address Line 1" 
-                    className="w-full mb-2" 
-                    color='secondary'
+                <div className="w-full">
+                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Address
+                  </p>
+                  <Input
+                    type="text"
+                    name="address_line"
+                    placeholder="Address Line 1"
+                    className="w-full mb-2"
+                    color="secondary"
                     defaultValue={data?.address_line}
                   />
                   <div className="grid grid-cols-3 gap-2">
-                    <Input 
-                      type="text" 
-                      name="address_city" 
-                      label="City" 
-                      size='sm' 
-                      className="" 
-                      color='secondary'
+                    <Input
+                      type="text"
+                      name="address_city"
+                      label="City"
+                      size="sm"
+                      className=""
+                      color="secondary"
                       defaultValue={data?.address_city}
                     />
-                    <Input 
-                      type="text" 
-                      name="address_state" 
-                      label="State" 
-                      size='sm' 
-                      className="" 
-                      color='secondary'
+                    <Input
+                      type="text"
+                      name="address_state"
+                      label="State"
+                      size="sm"
+                      className=""
+                      color="secondary"
                       defaultValue={data?.address_state}
                     />
-                    <Input 
-                      type="text" 
-                      name="address_zip_code" 
-                      label="ZIP / Postal Code" 
-                      size='sm' 
-                      className="" 
-                      color='secondary'
+                    <Input
+                      type="text"
+                      name="address_zip_code"
+                      label="ZIP / Postal Code"
+                      size="sm"
+                      className=""
+                      color="secondary"
                       defaultValue={data?.address_zip_code}
                     />
                   </div>
-                  <Input 
-                    type="text" 
-                    name="address_country" 
-                    label="Country" 
-                    className="mt-2 w-full" 
-                    color='secondary'
+                  <Input
+                    type="text"
+                    name="address_country"
+                    label="Country"
+                    className="mt-2 w-full"
+                    color="secondary"
                     defaultValue={data?.address_country}
                   />
                 </div>
 
                 {/* Billing Address */}
-                <div className='w-full'>
+                <div className="w-full">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="block text-sm font-medium text-gray-700 dark:text-gray-300">Billing Address</p>
-                    <div className='flex items-center'>
-                      <Switch 
-                        aria-label="Billing address same as Address" 
-                        size='sm' 
-                        onValueChange={setSame} 
-                        color='secondary'
-                      /> 
-                      <p className='text-xs pl-2'>Same as Address</p>
+                    <p className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Billing Address
+                    </p>
+                    <div className="flex items-center">
+                      <Switch
+                        aria-label="Billing address same as Address"
+                        size="sm"
+                        onValueChange={setSame}
+                        color="secondary"
+                      />
+                      <p className="text-xs pl-2">Same as Address</p>
                     </div>
                   </div>
                   {!same && (
                     <>
-                      <Input 
-                        type="text" 
-                        name="billing_address_line" 
-                        placeholder="Address Line 1" 
-                        className="w-full mb-2" 
-                        color='secondary'
+                      <Input
+                        type="text"
+                        name="billing_address_line"
+                        placeholder="Address Line 1"
+                        className="w-full mb-2"
+                        color="secondary"
                         defaultValue={data?.billing_address_line}
                       />
                       <div className="grid grid-cols-3 gap-2">
-                        <Input 
-                          type="text" 
-                          name="billing_city" 
-                          label="City" 
-                          size='sm' 
-                          className="" 
-                          color='secondary'
+                        <Input
+                          type="text"
+                          name="billing_city"
+                          label="City"
+                          size="sm"
+                          className=""
+                          color="secondary"
                           defaultValue={data?.billing_city}
                         />
-                        <Input 
-                          type="text" 
-                          name="billing_state" 
-                          label="State" 
-                          size='sm' 
-                          className="" 
-                          color='secondary'
+                        <Input
+                          type="text"
+                          name="billing_state"
+                          label="State"
+                          size="sm"
+                          className=""
+                          color="secondary"
                           defaultValue={data?.billing_state}
                         />
-                        <Input 
-                          type="text" 
-                          name="billing_zip_code" 
-                          label="ZIP / Postal Code" 
-                          size='sm' 
-                          className="" 
-                          color='secondary'
+                        <Input
+                          type="text"
+                          name="billing_zip_code"
+                          label="ZIP / Postal Code"
+                          size="sm"
+                          className=""
+                          color="secondary"
                           defaultValue={data?.billing_zip_code}
                         />
                       </div>
-                      <Input 
-                        type="text" 
-                        name="billing_country" 
-                        label="Country" 
-                        className="mt-2 w-full" 
-                        color='secondary'
+                      <Input
+                        type="text"
+                        name="billing_country"
+                        label="Country"
+                        className="mt-2 w-full"
+                        color="secondary"
                         defaultValue={data?.billing_country}
                       />
                     </>
                   )}
                   {same && (
-                    <p className="text-sm text-gray-500 italic py-2">Billing address will be same as Address</p>
+                    <p className="text-sm text-gray-500 italic py-2">
+                      Billing address will be same as Address
+                    </p>
                   )}
                 </div>
 
                 {/* Contact Information */}
-                <div className='w-full'>
-                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Person</p>
+                <div className="w-full">
+                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Person
+                  </p>
                   <div className="relative flex items-center justify-center gap-2">
                     <UserIcon className="h-6 text-gray-400" />
                     <Input
@@ -323,14 +361,16 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                       name="contact_person_name"
                       className="w-full"
                       placeholder="John Doe"
-                      color='secondary'
+                      color="secondary"
                       defaultValue={data?.contact_person_name}
                     />
                   </div>
                 </div>
 
-                <div className='w-full'>
-                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Email</p>
+                <div className="w-full">
+                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Email
+                  </p>
                   <div className="relative flex items-center justify-center gap-2">
                     <EnvelopeIcon className="h-6 text-gray-400" />
                     <Input
@@ -338,14 +378,16 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                       name="contact_email"
                       className="w-full"
                       placeholder="john@example.com"
-                      color='secondary'
+                      color="secondary"
                       defaultValue={data?.contact_email}
                     />
                   </div>
                 </div>
 
-                <div className='w-full'>
-                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Phone</p>
+                <div className="w-full">
+                  <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Phone
+                  </p>
                   <div className="relative flex items-center justify-center gap-2">
                     <PhoneIcon className="h-6 text-gray-400" />
                     <Input
@@ -353,7 +395,7 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
                       name="contact_phone"
                       className="w-full"
                       placeholder="+91 98765 43210"
-                      color='secondary'
+                      color="secondary"
                       defaultValue={data?.contact_phone}
                     />
                   </div>
@@ -361,16 +403,10 @@ export default function EditGuestModal({ isOpen, onClose, data, onUpdate }) {
 
                 {/* Submit Buttons */}
                 <div className="flex gap-3 justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <Button
-                    variant="flat"
-                    onPress={onClose}
-                  >
+                  <Button variant="flat" onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    color='secondary'
-                  >
+                  <Button type="submit" color="secondary">
                     Update Guest
                   </Button>
                 </div>

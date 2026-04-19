@@ -1,7 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TrashIcon, PaperClipIcon, ArrowDownTrayIcon, EyeIcon } from "@heroicons/react/24/solid";
-import { Button } from "@heroui/button";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/modal";
+import {
+  TrashIcon,
+  PaperClipIcon,
+  ArrowDownTrayIcon,
+  EyeIcon,
+} from "@heroicons/react/24/solid";
+import { Button } from "@heroui/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@heroui/react";
 
 export default function MultiFileUploader({ formData, setFiles, files }) {
   const [viewFileObj, setViewFileObj] = useState(null);
@@ -27,7 +38,8 @@ export default function MultiFileUploader({ formData, setFiles, files }) {
       "image/png": ".png",
       "application/pdf": ".pdf",
       "application/msword": ".doc",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        ".docx",
       "audio/mpeg": ".mp3",
       "video/mp4": ".mp4",
     };
@@ -78,7 +90,7 @@ export default function MultiFileUploader({ formData, setFiles, files }) {
           type: file.type,
           base64,
         };
-      })
+      }),
     );
     setFiles((prev) => [...prev, ...filesWithBase64]);
   };
@@ -200,7 +212,11 @@ export default function MultiFileUploader({ formData, setFiles, files }) {
         </ul>
       )}
 
-      <Modal isOpen={!!viewFileObj} onClose={() => setViewFileObj(null)} size="5xl">
+      <Modal
+        isOpen={!!viewFileObj}
+        onClose={() => setViewFileObj(null)}
+        size="5xl"
+      >
         <ModalContent>
           <ModalHeader>{viewFileObj?.name}</ModalHeader>
           <ModalBody>
@@ -227,7 +243,11 @@ export default function MultiFileUploader({ formData, setFiles, files }) {
               <audio controls src={viewFileObj.base64} className="w-full" />
             )}
             {viewFileObj?.type.startsWith("video/") && (
-              <video controls src={viewFileObj.base64} className="w-full h-[70vh]" />
+              <video
+                controls
+                src={viewFileObj.base64}
+                className="w-full h-[70vh]"
+              />
             )}
           </ModalBody>
           <ModalFooter>

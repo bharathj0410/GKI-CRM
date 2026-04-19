@@ -1,14 +1,24 @@
-"use client"
-import React from "react"
-import { Input, Select, SelectItem, Switch, Checkbox, CheckboxGroup } from "@heroui/react"
+"use client";
+import React from "react";
 import {
-  IdentificationIcon, TruckIcon, ShieldCheckIcon,
-  PaperClipIcon, KeyIcon,
-} from "@heroicons/react/24/solid"
-import MultiFileUploader from "../ui/MultiFileUploader"
+  Input,
+  Select,
+  SelectItem,
+  Switch,
+  Checkbox,
+  CheckboxGroup,
+} from "@heroui/react";
+import {
+  IdentificationIcon,
+  TruckIcon,
+  ShieldCheckIcon,
+  PaperClipIcon,
+  KeyIcon,
+} from "@heroicons/react/24/solid";
+import MultiFileUploader from "../ui/MultiFileUploader";
 
 // HeroUI CheckboxGroup may pass a Set or array — always normalize to plain array
-const toArr = (val) => Array.isArray(val) ? val : val ? Array.from(val) : []
+const toArr = (val) => (Array.isArray(val) ? val : val ? Array.from(val) : []);
 
 const idProofOptions = [
   { value: "aadhar", label: "Aadhar Card" },
@@ -23,7 +33,7 @@ const idProofOptions = [
   { value: "militaryId", label: "Military / Defence ID" },
   { value: "workPermit", label: "Work Permit" },
   { value: "other", label: "Other" },
-]
+];
 
 const vehicleTypes = [
   { key: "car", label: "Car" },
@@ -36,7 +46,7 @@ const vehicleTypes = [
   { key: "bus", label: "Bus" },
   { key: "auto", label: "Auto Rickshaw" },
   { key: "other", label: "Other" },
-]
+];
 
 const materialsOptions = [
   { value: "tools", label: "Tools" },
@@ -49,19 +59,22 @@ const materialsOptions = [
   { value: "electricalItems", label: "Electrical Items" },
   { value: "personalItems", label: "Personal Items" },
   { value: "other", label: "Other" },
-]
+];
 
 export default function SecurityStep({ data, onChange }) {
-  const set = (key, val) => onChange(prev => ({ ...prev, [key]: val }))
+  const set = (key, val) => onChange((prev) => ({ ...prev, [key]: val }));
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">Security &amp; Compliance</h2>
+      <h2 className="text-lg font-bold text-gray-900 pb-2 border-b border-gray-100">
+        Security &amp; Compliance
+      </h2>
 
       {/* ID Proofs */}
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-          <IdentificationIcon className="w-4 h-4 text-purple-600" /> Provided ID Proofs
+          <IdentificationIcon className="w-4 h-4 text-purple-600" /> Provided ID
+          Proofs
         </p>
         <div className="p-4 bg-secondary-50 rounded-xl border border-secondary-100">
           <CheckboxGroup
@@ -70,7 +83,7 @@ export default function SecurityStep({ data, onChange }) {
             onValueChange={(v) => set("providedIDProofs", toArr(v))}
             classNames={{ wrapper: "gap-2 flex-wrap" }}
           >
-            {idProofOptions.map(opt => (
+            {idProofOptions.map((opt) => (
               <Checkbox
                 key={opt.value}
                 value={opt.value}
@@ -104,8 +117,12 @@ export default function SecurityStep({ data, onChange }) {
           <div className="flex items-center gap-2">
             <TruckIcon className="w-5 h-5 text-orange-600" />
             <div>
-              <p className="text-sm font-semibold text-gray-800">Has Vehicle?</p>
-              <p className="text-xs text-gray-500">Visitor arrived with a vehicle</p>
+              <p className="text-sm font-semibold text-gray-800">
+                Has Vehicle?
+              </p>
+              <p className="text-xs text-gray-500">
+                Visitor arrived with a vehicle
+              </p>
             </div>
           </div>
           <Switch
@@ -123,7 +140,9 @@ export default function SecurityStep({ data, onChange }) {
               variant="flat"
               value={data.vehicleNumber}
               onValueChange={(v) => set("vehicleNumber", v)}
-              startContent={<IdentificationIcon className="w-4 h-4 text-gray-400" />}
+              startContent={
+                <IdentificationIcon className="w-4 h-4 text-gray-400" />
+              }
             />
             <Select
               items={vehicleTypes}
@@ -131,8 +150,12 @@ export default function SecurityStep({ data, onChange }) {
               placeholder="Select type"
               color="secondary"
               variant="flat"
-              selectedKeys={data.vehicleType ? new Set([data.vehicleType]) : new Set()}
-              onSelectionChange={(keys) => set("vehicleType", Array.from(keys)[0] || "")}
+              selectedKeys={
+                data.vehicleType ? new Set([data.vehicleType]) : new Set()
+              }
+              onSelectionChange={(keys) =>
+                set("vehicleType", Array.from(keys)[0] || "")
+              }
               startContent={<TruckIcon className="w-4 h-4 text-gray-400" />}
             >
               {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
@@ -143,7 +166,9 @@ export default function SecurityStep({ data, onChange }) {
 
       {/* Materials */}
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-3">Materials Carried In</p>
+        <p className="text-sm font-semibold text-gray-700 mb-3">
+          Materials Carried In
+        </p>
         <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
           <CheckboxGroup
             orientation="horizontal"
@@ -151,7 +176,7 @@ export default function SecurityStep({ data, onChange }) {
             onValueChange={(v) => set("materialsCarriedIn", toArr(v))}
             classNames={{ wrapper: "gap-2 flex-wrap" }}
           >
-            {materialsOptions.map(opt => (
+            {materialsOptions.map((opt) => (
               <Checkbox
                 key={opt.value}
                 value={opt.value}
@@ -171,7 +196,8 @@ export default function SecurityStep({ data, onChange }) {
       {/* Compliance */}
       <div className="p-4 bg-green-50 rounded-xl border border-green-100">
         <p className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-          <ShieldCheckIcon className="w-4 h-4 text-green-600" /> Compliance Checklist
+          <ShieldCheckIcon className="w-4 h-4 text-green-600" /> Compliance
+          Checklist
         </p>
         <div className="flex flex-col gap-3">
           <Checkbox
@@ -186,7 +212,9 @@ export default function SecurityStep({ data, onChange }) {
             isSelected={data.ndaSigned}
             onValueChange={(v) => set("ndaSigned", v)}
           >
-            <span className="text-sm font-medium">NDA / Confidentiality Agreement Signed</span>
+            <span className="text-sm font-medium">
+              NDA / Confidentiality Agreement Signed
+            </span>
           </Checkbox>
         </div>
       </div>
@@ -216,14 +244,20 @@ export default function SecurityStep({ data, onChange }) {
       {/* File Uploader */}
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-          <PaperClipIcon className="w-4 h-4 text-purple-600" /> Upload Attachments
+          <PaperClipIcon className="w-4 h-4 text-purple-600" /> Upload
+          Attachments
         </p>
         <MultiFileUploader
           formData={{ attachments: data.attachments }}
           files={data.attachments}
-          setFiles={(files) => set("attachments", typeof files === "function" ? files(data.attachments) : files)}
+          setFiles={(files) =>
+            set(
+              "attachments",
+              typeof files === "function" ? files(data.attachments) : files,
+            )
+          }
         />
       </div>
     </div>
-  )
+  );
 }

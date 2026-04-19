@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Form, Input } from "@heroui/react";
 import axios from "axios";
-import Toast from "@/components/Toast"
+
+import Toast from "@/components/Toast";
 
 export const EyeSlashFilledIcon = (props) => {
   return (
@@ -72,9 +73,9 @@ export default function App({ setIsLogin, setRole }) {
       .then((response) => {
         if (response.status == 200) {
           Toast("Login Successful.", response.data.message, "success");
-          setIsLogin(true)
+          setIsLogin(true);
           // console.log(response.data.role)
-          setRole([response.data.role])
+          setRole([response.data.role]);
         }
       })
       .catch((err) => {
@@ -85,6 +86,7 @@ export default function App({ setIsLogin, setRole }) {
   const onSubmit = (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
+
     setSubmitted(data);
     login(data);
   };
@@ -96,21 +98,21 @@ export default function App({ setIsLogin, setRole }) {
   return (
     <Form className="w-full" onSubmit={onSubmit}>
       <Input
-        name="username"
         isRequired
         className="w-full"
+        color="secondary"
         defaultValue=""
         label="User Name"
+        name="username"
         placeholder="Enter your User Name"
         type="text"
         variant="flat"
-        color="secondary"
       />
 
       <Input
         isRequired
-        name="password"
         className="w-full"
+        color="secondary"
         endContent={
           <button
             aria-label="toggle password visibility"
@@ -126,16 +128,16 @@ export default function App({ setIsLogin, setRole }) {
           </button>
         }
         label="Password"
+        name="password"
         placeholder="Enter your password"
         type={isVisible ? "text" : "password"}
         variant="flat"
-        color="secondary"
       />
       <Button
+        className="w-full mt-5"
         color="secondary"
         type="submit"
         variant="shadow"
-        className="w-full mt-5"
       >
         Log In
       </Button>

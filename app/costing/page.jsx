@@ -1,7 +1,12 @@
-"use client"
-import React from 'react'
-import { UsersIcon, NewspaperIcon, BuildingOfficeIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+"use client";
+import React from "react";
+import {
+  UsersIcon,
+  NewspaperIcon,
+  BuildingOfficeIcon,
+  ArrowRightIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const cards = [
   {
@@ -60,13 +65,16 @@ export default function CostingPage() {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/80 dark:bg-purple-900/30 border border-purple-200/60 dark:border-purple-700/40 mb-5">
             <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-            <span className="text-xs font-semibold text-purple-700 dark:text-purple-300 tracking-wide uppercase">Billing & Orders</span>
+            <span className="text-xs font-semibold text-purple-700 dark:text-purple-300 tracking-wide uppercase">
+              Billing & Orders
+            </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-3 text-gray-900 dark:text-white tracking-tight">
             Costing Management
           </h1>
           <p className="text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
-            Choose a workflow below to create new bills or manage existing records
+            Choose a workflow below to create new bills or manage existing
+            records
           </p>
         </div>
 
@@ -75,18 +83,30 @@ export default function CostingPage() {
           {cards.map((card) => {
             const Icon = card.icon;
             return (
-              <Link key={card.href} href={card.href} className="group outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded-2xl">
-                <div className={`relative h-full rounded-2xl border border-purple-200/60 dark:border-purple-700/40 ${card.hoverBorder} bg-gradient-to-br from-purple-50 via-violet-50/80 to-fuchsia-50/60 dark:from-purple-900/40 dark:via-violet-900/30 dark:to-gray-800/80 backdrop-blur-sm transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:shadow-purple-500/20 overflow-hidden`}>
+              <Link
+                key={card.href}
+                href={card.href}
+                className="group outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded-2xl"
+              >
+                <div
+                  className={`relative h-full rounded-2xl border border-purple-200/60 dark:border-purple-700/40 ${card.hoverBorder} bg-gradient-to-br from-purple-50 via-violet-50/80 to-fuchsia-50/60 dark:from-purple-900/40 dark:via-violet-900/30 dark:to-gray-800/80 backdrop-blur-sm transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:shadow-purple-500/20 overflow-hidden`}
+                >
                   {/* Top gradient accent line */}
-                  <div className={`h-1 w-full bg-gradient-to-r ${card.gradient}`} />
+                  <div
+                    className={`h-1 w-full bg-gradient-to-r ${card.gradient}`}
+                  />
 
                   <div className="p-7 flex flex-col h-full">
                     {/* Icon + Badge row */}
                     <div className="flex items-start justify-between mb-6">
-                      <div className={`p-3 rounded-xl ${card.iconBg} ring-1 ${card.accentRing} transition-all duration-300 group-hover:scale-110 group-hover:shadow-md`}>
+                      <div
+                        className={`p-3 rounded-xl ${card.iconBg} ring-1 ${card.accentRing} transition-all duration-300 group-hover:scale-110 group-hover:shadow-md`}
+                      >
                         <Icon className={`w-7 h-7 ${card.iconColor}`} />
                       </div>
-                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-gradient-to-r ${card.gradient} text-white shadow-sm`}>
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-gradient-to-r ${card.gradient} text-white shadow-sm`}
+                      >
                         {card.badge}
                       </span>
                     </div>
@@ -113,9 +133,13 @@ export default function CostingPage() {
 
         {/* Bottom hint */}
         <p className="mt-10 text-xs text-gray-400 dark:text-gray-500 text-center">
-          Tip: Use <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[11px] font-mono">Existing Guest</kbd> to quickly look up a previous order
+          Tip: Use{" "}
+          <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[11px] font-mono">
+            Existing Guest
+          </kbd>{" "}
+          to quickly look up a previous order
         </p>
       </div>
     </div>
-  )
+  );
 }

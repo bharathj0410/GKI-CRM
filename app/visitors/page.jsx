@@ -1,70 +1,89 @@
-"use client"
-import React, { useEffect, useState, useCallback } from "react"
-import { Card, CardBody, Chip, Skeleton } from "@heroui/react"
+"use client";
+import React, { useEffect, useState, useCallback } from "react";
+import { Card, CardBody, Chip, Skeleton } from "@heroui/react";
 import {
-  UserGroupIcon, ArrowRightOnRectangleIcon, UsersIcon,
-  BuildingOffice2Icon, WrenchScrewdriverIcon, ClockIcon,
-} from "@heroicons/react/24/solid"
-import VisitorsTable from "./components/VisitorsTable"
-import Widget from "@/app/visitors/components/Widget"
-import VisitorsForm from "./components/VisitorForm/VisitorsForm"
-import axios from "@/lib/axios"
-import Toast from "@/components/Toast"
+  UserGroupIcon,
+  ArrowRightOnRectangleIcon,
+  UsersIcon,
+  BuildingOffice2Icon,
+  WrenchScrewdriverIcon,
+  ClockIcon,
+} from "@heroicons/react/24/solid";
+import VisitorsTable from "./components/VisitorsTable";
+import Widget from "@/app/visitors/components/Widget";
+import VisitorsForm from "./components/VisitorForm/VisitorsForm";
+import axios from "@/lib/axios";
+import Toast from "@/components/Toast";
 
 export default function Visitors() {
-  const [openVisitorsForm, setOpenVisitorsForm] = useState(false)
-  const [editingVisitor, setEditingVisitor] = useState(null)
-  const [visitors, setVisitors] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [openVisitorsForm, setOpenVisitorsForm] = useState(false);
+  const [editingVisitor, setEditingVisitor] = useState(null);
+  const [visitors, setVisitors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
-    total: 0, inside: 0, exitedToday: 0, vendors: 0, workers: 0, today: 0,
-  })
+    total: 0,
+    inside: 0,
+    exitedToday: 0,
+    vendors: 0,
+    workers: 0,
+    today: 0,
+  });
 
   const fetchVisitors = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const res = await axios.get("visitors")
-      const data = res.data?.data || res.data || []
-      setVisitors(data)
+      const res = await axios.get("visitors");
+      const data = res.data?.data || res.data || [];
+      setVisitors(data);
 
-      const now = new Date()
-      const todayStr = now.toISOString().split("T")[0]
+      const now = new Date();
+      const todayStr = now.toISOString().split("T")[0];
 
       setStats({
         total: data.length,
-        inside: data.filter(v => v.status === "inside").length,
-        exitedToday: data.filter(v => {
-          if (v.status !== "exited" || !v.checkOut) return false
-          return new Date(v.checkOut).toISOString().split("T")[0] === todayStr
+        inside: data.filter((v) => v.status === "inside").length,
+        exitedToday: data.filter((v) => {
+          if (v.status !== "exited" || !v.checkOut) return false;
+          return new Date(v.checkOut).toISOString().split("T")[0] === todayStr;
         }).length,
-        vendors: data.filter(v => v.visitorType === "vendor").length,
-        workers: data.filter(v => ["contractor", "serviceProvider", "logistics"].includes(v.visitorType)).length,
-        today: data.filter(v => v.checkIn && new Date(v.checkIn).toISOString().split("T")[0] === todayStr).length,
-      })
+        vendors: data.filter((v) => v.visitorType === "vendor").length,
+        workers: data.filter((v) =>
+          ["contractor", "serviceProvider", "logistics"].includes(
+            v.visitorType,
+          ),
+        ).length,
+        today: data.filter(
+          (v) =>
+            v.checkIn &&
+            new Date(v.checkIn).toISOString().split("T")[0] === todayStr,
+        ).length,
+      });
     } catch {
-      Toast("Error", "Error fetching visitor data", "danger")
+      Toast("Error", "Error fetching visitor data", "danger");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [])
+  }, []);
 
-  useEffect(() => { fetchVisitors() }, [fetchVisitors])
+  useEffect(() => {
+    fetchVisitors();
+  }, [fetchVisitors]);
 
   const handleVisitorSuccess = () => {
-    fetchVisitors()
-    setOpenVisitorsForm(false)
-    setEditingVisitor(null)
-  }
+    fetchVisitors();
+    setOpenVisitorsForm(false);
+    setEditingVisitor(null);
+  };
 
   const handleEdit = (visitor) => {
-    setEditingVisitor(visitor)
-    setOpenVisitorsForm(true)
-  }
+    setEditingVisitor(visitor);
+    setOpenVisitorsForm(true);
+  };
 
   const handleAddNew = () => {
-    setEditingVisitor(null)
-    setOpenVisitorsForm(true)
-  }
+    setEditingVisitor(null);
+    setOpenVisitorsForm(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-gray-100">
@@ -77,8 +96,12 @@ export default function Visitors() {
                 <UserGroupIcon className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Visitor Management</h1>
-                <p className="text-xs text-gray-500">Track visitors, vendors &amp; contractors</p>
+                <h1 className="text-xl font-bold text-gray-900">
+                  Visitor Management
+                </h1>
+                <p className="text-xs text-gray-500">
+                  Track visitors, vendors &amp; contractors
+                </p>
               </div>
             </div>
             <Chip
@@ -103,11 +126,36 @@ export default function Visitors() {
             ))
           ) : (
             <>
-              <Widget icon={<UsersIcon className="w-6 text-white" />} count={stats.total} name="Total Visitors" gradient="from-blue-500 to-blue-600" />
-              <Widget icon={<BuildingOffice2Icon className="w-6 text-white" />} count={stats.inside} name="Currently Inside" gradient="from-green-500 to-green-600" />
-              <Widget icon={<ArrowRightOnRectangleIcon className="w-6 text-white" />} count={stats.exitedToday} name="Exited Today" gradient="from-gray-500 to-gray-600" />
-              <Widget icon={<UserGroupIcon className="w-6 text-white" />} count={stats.vendors} name="Total Vendors" gradient="from-purple-500 to-purple-600" />
-              <Widget icon={<WrenchScrewdriverIcon className="w-6 text-white" />} count={stats.workers} name="Service / Workers" gradient="from-orange-500 to-orange-600" />
+              <Widget
+                icon={<UsersIcon className="w-6 text-white" />}
+                count={stats.total}
+                name="Total Visitors"
+                gradient="from-blue-500 to-blue-600"
+              />
+              <Widget
+                icon={<BuildingOffice2Icon className="w-6 text-white" />}
+                count={stats.inside}
+                name="Currently Inside"
+                gradient="from-green-500 to-green-600"
+              />
+              <Widget
+                icon={<ArrowRightOnRectangleIcon className="w-6 text-white" />}
+                count={stats.exitedToday}
+                name="Exited Today"
+                gradient="from-gray-500 to-gray-600"
+              />
+              <Widget
+                icon={<UserGroupIcon className="w-6 text-white" />}
+                count={stats.vendors}
+                name="Total Vendors"
+                gradient="from-purple-500 to-purple-600"
+              />
+              <Widget
+                icon={<WrenchScrewdriverIcon className="w-6 text-white" />}
+                count={stats.workers}
+                name="Service / Workers"
+                gradient="from-orange-500 to-orange-600"
+              />
             </>
           )}
         </div>
@@ -118,8 +166,8 @@ export default function Visitors() {
             {openVisitorsForm ? (
               <VisitorsForm
                 setOpenVisitorsForm={(open) => {
-                  setOpenVisitorsForm(open)
-                  if (!open) setEditingVisitor(null)
+                  setOpenVisitorsForm(open);
+                  if (!open) setEditingVisitor(null);
                 }}
                 formData={editingVisitor || {}}
                 onSuccess={handleVisitorSuccess}
@@ -136,5 +184,5 @@ export default function Visitors() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

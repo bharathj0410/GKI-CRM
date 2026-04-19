@@ -1,21 +1,21 @@
-"use client"
-import { Button } from "@heroui/button"
-import React, { useRef } from "react"
-import SignatureCanvas from "react-signature-canvas"
+"use client";
+import { Button } from "@heroui/button";
+import React, { useRef } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
 export default function SignaturePadWidget({ title, onSave, value }) {
-  const sigCanvas = useRef(null)
+  const sigCanvas = useRef(null);
 
   const handleSave = () => {
-    if (!sigCanvas.current || sigCanvas.current.isEmpty()) return
-    const dataUrl = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png")
-    onSave?.(dataUrl)
-  }
+    if (!sigCanvas.current || sigCanvas.current.isEmpty()) return;
+    const dataUrl = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+    onSave?.(dataUrl);
+  };
 
   const handleClear = () => {
-    sigCanvas.current?.clear()
-    onSave?.(null)
-  }
+    sigCanvas.current?.clear();
+    onSave?.(null);
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -36,13 +36,25 @@ export default function SignaturePadWidget({ title, onSave, value }) {
         </div>
       )}
       <div className="flex gap-2">
-        <Button size="sm" color="danger" variant="flat" onPress={handleClear} fullWidth>
+        <Button
+          size="sm"
+          color="danger"
+          variant="flat"
+          onPress={handleClear}
+          fullWidth
+        >
           Clear
         </Button>
-        <Button size="sm" color="success" variant="flat" onPress={handleSave} fullWidth>
+        <Button
+          size="sm"
+          color="success"
+          variant="flat"
+          onPress={handleSave}
+          fullWidth
+        >
           Save Signature
         </Button>
       </div>
     </div>
-  )
+  );
 }

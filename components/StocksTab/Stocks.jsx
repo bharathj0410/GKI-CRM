@@ -1,9 +1,9 @@
-import React from 'react'
-import Test from "./Text"
-import { Button, Form } from '@heroui/react';
+import React from "react";
+import Test from "./Text";
+import { Button, Form } from "@heroui/react";
 
 export default function Stocks() {
-    const [submitted, setSubmitted] = React.useState(null);
+  const [submitted, setSubmitted] = React.useState(null);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ export default function Stocks() {
   };
   return (
     <Form className="w-full max-w-xs" onSubmit={onSubmit}>
-       <Test/>
+      <Test />
       <Button color="primary" type="submit">
         Submit
       </Button>
@@ -23,6 +23,5 @@ export default function Stocks() {
         </div>
       )}
     </Form>
-     
-  )
+  );
 }
