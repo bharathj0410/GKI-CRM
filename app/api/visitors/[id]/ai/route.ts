@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const runtime = "edge"
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await req.json()
     const { action, visitorData } = body

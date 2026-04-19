@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const client = await clientPromise
     const db = client.db("GKI")
-    const visitor = await db.collection("visitors").findOne({ _id: new ObjectId(params.id) })
+    const visitor = await db.collection("visitors").findOne({ _id: new ObjectId(id) })
     if (!visitor) return NextResponse.json({ error: "Visitor not found" }, { status: 404 })
     return NextResponse.json(visitor)
   } catch (err) {
@@ -14,8 +15,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const client = await clientPromise
     const db = client.db("GKI")
     const body = await req.json()
@@ -30,7 +32,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     const result = await db
       .collection("visitors")
-      .updateOne({ _id: new ObjectId(params.id) }, { $set: updateData })
+      .updateOne({ _id: new ObjectId(id) }, { $set: updateData })
 
     if (result.matchedCount === 0) return NextResponse.json({ error: "Visitor not found" }, { status: 404 })
 
@@ -40,11 +42,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const client = await clientPromise
     const db = client.db("GKI")
-    const result = await db.collection("visitors").deleteOne({ _id: new ObjectId(params.id) })
+    const result = await db.collection("visitors").deleteOne({ _id: new ObjectId(id) })
     if (result.deletedCount === 0) return NextResponse.json({ error: "Visitor not found" }, { status: 404 })
     return NextResponse.json({ message: "Visitor deleted successfully" })
   } catch (err) {

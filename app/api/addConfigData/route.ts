@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: `${key} Table has been Updated !!` });
     } catch (err) {
         console.error("Error inserting into MongoDB:", err);
-        if (err.code === 11000) {
+        if ((err as any).code === 11000) {
             return NextResponse.json({ error: "Username is in use. Please choose another one." }, { status: 400 });
         }
         return NextResponse.json({ error: "MongoDB connection or insert failed" }, { status: 500 });

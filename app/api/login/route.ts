@@ -18,7 +18,7 @@ async function generateToken(userId: string, username: string, role: string) {
   return token;
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const { username, password, newPassword } = await req.json()
   const client = await clientPromise
   const db = client.db("GKI")

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       orderData = await db.collection("guestData").find({"id":orderId}).toArray();
       productData = await db.collection("orderData").find({"id":{ $in: productId}}).toArray();
     }else{
-      data = await db.collection("guestData").find().toArray();
+      orderData = await db.collection("guestData").find().toArray();
     }
     return NextResponse.json({"order_data":orderData[0],"product_data":productData,"product_quotation":[
       {

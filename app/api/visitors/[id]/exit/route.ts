@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const client = await clientPromise
     const db = client.db("GKI")
     const body = await req.json()
@@ -19,7 +20,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     const result = await db
       .collection("visitors")
-      .updateOne({ _id: new ObjectId(params.id) }, { $set: updateData })
+      .updateOne({ _id: new ObjectId(id) }, { $set: updateData })
 
     if (result.matchedCount === 0) return NextResponse.json({ error: "Visitor not found" }, { status: 404 })
 

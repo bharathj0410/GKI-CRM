@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await db.collection("config").findOne({});
-    const items = data[tableName]
+    const items = data?.[tableName]
     if (hasPrice == "true" || forDropDown == "true") {
       if (items) {
         return NextResponse.json(items);
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       }
     }
     if (items) {
-      const keysArray = items.map(item => item.key);
+      const keysArray = items.map((item: any) => item.key);
       return NextResponse.json(keysArray);
     } else {
       return NextResponse.json([]);
