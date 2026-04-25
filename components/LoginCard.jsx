@@ -51,7 +51,6 @@ export default function LoginCard({
                 <div>
                   <Input
                     isRequired
-                    label="Username"
                     placeholder="Enter your username"
                     type="text"
                     color="default"
@@ -71,7 +70,6 @@ export default function LoginCard({
                 <div>
                   <Input
                     isRequired
-                    label="Password"
                     placeholder="Enter your password"
                     type={showPassword ? "text" : "password"}
                     color="default"
