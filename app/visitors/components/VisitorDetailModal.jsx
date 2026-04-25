@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   ModalContent,
@@ -17,10 +17,6 @@ import {
   PencilIcon,
   ArrowRightOnRectangleIcon,
   TrashIcon,
-  SparklesIcon,
-  DocumentTextIcon,
-  FlagIcon,
-  EnvelopeIcon,
   CheckCircleIcon,
   XCircleIcon,
   UserIcon,
@@ -87,124 +83,6 @@ function BadgeList({ items }) {
           {item}
         </Chip>
       ))}
-    </div>
-  );
-}
-
-function AIPanel({ visitor }) {
-  const [aiOutput, setAiOutput] = useState("");
-  const [activeAction, setActiveAction] = useState(null);
-  const [isStreaming, setIsStreaming] = useState(false);
-
-  const runAI = async (action) => {
-    setActiveAction(action);
-    setAiOutput("");
-    setIsStreaming(true);
-    try {
-      const response = await fetch(`/api/visitors/${visitor._id}/ai`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, visitorData: visitor }),
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        setAiOutput(`Error: ${err.error || "Request failed"}`);
-        return;
-      }
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let text = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        text += decoder.decode(value, { stream: true });
-        setAiOutput(text);
-      }
-    } catch (err) {
-      setAiOutput(
-        "AI request failed. Please check your API key configuration.",
-      );
-    } finally {
-      setIsStreaming(false);
-    }
-  };
-
-  const actions = [
-    {
-      key: "summarize",
-      label: "Summarize Visit",
-      icon: <DocumentTextIcon className="w-4 h-4" />,
-      color: "secondary",
-    },
-    {
-      key: "flag",
-      label: "Flag for Review",
-      icon: <FlagIcon className="w-4 h-4" />,
-      color: "warning",
-    },
-    {
-      key: "email",
-      label: "Draft Follow-up Email",
-      icon: <EnvelopeIcon className="w-4 h-4" />,
-      color: "primary",
-    },
-  ];
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-2">
-        <SparklesIcon className="w-5 h-5 text-purple-600" />
-        <p className="text-sm font-bold text-gray-800">AI Assistant</p>
-        <Chip size="sm" color="secondary" variant="flat">
-          Claude Sonnet
-        </Chip>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {actions.map((action) => (
-          <Button
-            key={action.key}
-            size="sm"
-            color={action.color}
-            variant={activeAction === action.key ? "shadow" : "flat"}
-            startContent={action.icon}
-            onPress={() => runAI(action.key)}
-            isLoading={isStreaming && activeAction === action.key}
-            isDisabled={isStreaming && activeAction !== action.key}
-          >
-            {action.label}
-          </Button>
-        ))}
-      </div>
-
-      {(aiOutput || isStreaming) && (
-        <div className="relative bg-gray-950 rounded-xl p-4 min-h-[120px]">
-          <div className="absolute top-3 right-3 flex items-center gap-1.5">
-            {isStreaming && (
-              <span className="flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500" />
-              </span>
-            )}
-            <span className="text-xs text-gray-500">
-              {isStreaming ? "Generating..." : "Done"}
-            </span>
-          </div>
-          <p className="text-sm text-gray-100 font-mono leading-relaxed whitespace-pre-wrap pr-20">
-            {aiOutput}
-            {isStreaming && <span className="animate-pulse">▊</span>}
-          </p>
-        </div>
-      )}
-
-      {!aiOutput && !isStreaming && (
-        <div className="bg-gray-50 rounded-xl p-4 border-2 border-dashed border-gray-200 text-center">
-          <SparklesIcon className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm text-gray-400">
-            Select an action above to run AI analysis
-          </p>
-        </div>
-      )}
     </div>
   );
 }
@@ -484,20 +362,6 @@ export default function VisitorDetailModal({
               </div>
             </Tab>
 
-            {/* AI Panel */}
-            <Tab
-              key="ai"
-              title={
-                <span className="flex items-center gap-1.5">
-                  <SparklesIcon className="w-4 h-4 text-purple-600" />
-                  AI Analysis
-                </span>
-              }
-            >
-              <div className="pt-3">
-                <AIPanel visitor={visitor} />
-              </div>
-            </Tab>
           </Tabs>
         </ModalBody>
 
