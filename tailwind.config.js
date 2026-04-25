@@ -1,16 +1,15 @@
 const { heroui } = require("@heroui/theme");
+const path = require("path");
+
+// Resolve the absolute path to the theme package to bypass symlink issues with bun/pnpm
+const herouiThemePath = path.dirname(require.resolve("@heroui/theme/package.json"));
 
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@heroui/react/dist/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/button/dist/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/input/dist/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/card/dist/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/form/dist/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/*/dist/**/*.{js,ts,jsx,tsx}",
+    path.join(herouiThemePath, "dist/**/*.{js,ts,jsx,tsx}"),
   ],
   theme: {
     extend: {
