@@ -54,10 +54,17 @@ export default function LoginCard({
                     label="Username"
                     placeholder="Enter your username"
                     type="text"
-                    color="secondary"
+                    color="default"
+                    variant="bordered"
                     value={username}
                     onValueChange={setUsername}
                     size="lg"
+                    classNames={{
+                      label: "text-slate-600",
+                      input: "text-slate-900",
+                      inputWrapper:
+                        "bg-white border-slate-300 data-[hover=true]:border-slate-300 group-data-[focus=true]:border-secondary group-data-[focus=true]:bg-white",
+                    }}
                   />
                 </div>
 
@@ -67,10 +74,17 @@ export default function LoginCard({
                     label="Password"
                     placeholder="Enter your password"
                     type={showPassword ? "text" : "password"}
-                    color="secondary"
+                    color="default"
+                    variant="bordered"
                     value={password}
                     onValueChange={setPassword}
                     size="lg"
+                    classNames={{
+                      label: "text-slate-600",
+                      input: "text-slate-900",
+                      inputWrapper:
+                        "bg-white border-slate-300 data-[hover=true]:border-slate-300 group-data-[focus=true]:border-secondary group-data-[focus=true]:bg-white",
+                    }}
                     endContent={
                       <button
                         className="focus:outline-none text-xs font-semibold uppercase tracking-wide text-secondary"
@@ -104,7 +118,8 @@ export default function LoginCard({
                   label="New Password"
                   placeholder="Create a strong password"
                   type={showNewPassword ? "text" : "password"}
-                  color="secondary"
+                  color="default"
+                  variant="bordered"
                   value={newPassword}
                   onValueChange={setNewPassword}
                   size="lg"
@@ -120,6 +135,12 @@ export default function LoginCard({
                       ""
                     )
                   }
+                  classNames={{
+                    label: "text-slate-600",
+                    input: "text-slate-900",
+                    inputWrapper:
+                      "bg-white border-slate-300 data-[hover=true]:border-slate-300 group-data-[focus=true]:border-secondary group-data-[focus=true]:bg-white",
+                  }}
                   endContent={
                     <button
                       className="focus:outline-none text-xs font-semibold uppercase tracking-wide text-secondary"
@@ -136,7 +157,8 @@ export default function LoginCard({
                   label="Confirm Password"
                   placeholder="Re-enter your password"
                   type={showConfirmPassword ? "text" : "password"}
-                  color="secondary"
+                  color="default"
+                  variant="bordered"
                   value={confirmPassword}
                   onValueChange={setConfirmPassword}
                   size="lg"
@@ -148,6 +170,12 @@ export default function LoginCard({
                       ? "Passwords do not match"
                       : ""
                   }
+                  classNames={{
+                    label: "text-slate-600",
+                    input: "text-slate-900",
+                    inputWrapper:
+                      "bg-white border-slate-300 data-[hover=true]:border-slate-300 group-data-[focus=true]:border-secondary group-data-[focus=true]:bg-white",
+                  }}
                   endContent={
                     <button
                       className="focus:outline-none text-xs font-semibold uppercase tracking-wide text-secondary"
