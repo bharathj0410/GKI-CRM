@@ -232,7 +232,6 @@ export default function LoginPage() {
                     <Input
                       isRequired
                       label="Username"
-                      labelPlacement="outside"
                       placeholder="Enter your username"
                       type="text"
                       color="secondary"
@@ -248,7 +247,6 @@ export default function LoginPage() {
                     <Input
                       isRequired
                       label="Password"
-                      labelPlacement="outside"
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
                       color="secondary"
@@ -334,7 +332,6 @@ export default function LoginPage() {
                     <Input
                       isRequired
                       label="New Password"
-                      labelPlacement="outside"
                       placeholder="Create a strong password"
                       type={showNewPassword ? "text" : "password"}
                       color="secondary"
@@ -404,7 +401,6 @@ export default function LoginPage() {
                     <Input
                       isRequired
                       label="Confirm Password"
-                      labelPlacement="outside"
                       placeholder="Re-enter your password"
                       type={showConfirmPassword ? "text" : "password"}
                       color="secondary"
