@@ -1,7 +1,7 @@
 // lib/mongodb.ts
 import { MongoClient } from "mongodb";
 
-const uri = context.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI;
 const options = {};
 
 let clientPromise: Promise<MongoClient>;
