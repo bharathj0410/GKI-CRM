@@ -106,7 +106,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen justify-center w-screen">
+    <div className="flex h-full min-h-screen justify-center w-full">
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-secondary via-purple-600 to-primary-600 p-12 flex-col justify-between relative overflow-hidden">
         {/* Decorative Elements */}

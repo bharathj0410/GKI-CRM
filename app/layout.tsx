@@ -41,9 +41,9 @@ export default function RootLayout({
           }}
         >
           <AuthProvider>
-            <div className="relative flex h-screen light font-poppins">
+            <div className="relative flex h-screen light font-poppins overflow-hidden">
               <NavBar />
-              <main className="container flex-grow">{children}</main>
+              <main className="flex-1 w-full overflow-y-auto">{children}</main>
             </div>
           </AuthProvider>
         </Providers>
